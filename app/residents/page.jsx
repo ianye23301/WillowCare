@@ -3,15 +3,18 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-
 const Form = () => {
+
   const [name, setName] = useState('');
   const [roomNumber, setRoomNumber] = useState('');
-  const [careLevel, setCareLevel] = useState('');
+  const [careLevel, setCareLevel] = useState(1);
+  const [birthday, setBirthday] = useState('');
+  const [gender, setGender] = useState('Male');
+
+
   const { data: session, status } = useSession();
   const [userResidents, setUserResidents] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [intendedDestination, setIntendedDestination] = useState(null);
   const router = useRouter();
 
 
@@ -28,6 +31,7 @@ const Form = () => {
       });
       const data = await response.json();
       setUserResidents(data);
+      console.log(data)
     } catch (error) {
       console.error('Error fetching regulations data:', error);
     }
@@ -45,14 +49,11 @@ const Form = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
   if (name === ""){
     return
   }
-
     const currentDate = new Date().toISOString().split('T')[0];
-    const formData = { name, roomNumber, careLevel, date: currentDate, user_email: session?.user.email };
-
+    const formData = { name, roomNumber, careLevel, birthday, gender, date: currentDate, user_email: session?.user.email, responsible: session?.user.name };
     try {
       const response = await fetch('/api/residents/new', {
         method: 'POST',
@@ -65,6 +66,8 @@ const Form = () => {
         setName('');
         setRoomNumber('');
         setCareLevel('');
+        setBirthday('')
+        setGender('')
         setShowForm(false);
         fetchUserResidents();
       } else {
@@ -93,6 +96,12 @@ const Form = () => {
       console.error('Error deleting user:', error);
     }
   };
+
+
+  const openProfile = (residentId) => {
+    router.push(`/profile/${residentId}`);
+  };
+
 
   return (
     <div className="container mx-auto">
@@ -129,6 +138,11 @@ const Form = () => {
                         Delete
                       </button>
                     </td>
+                    <td>
+                      <button onClick={() => openProfile(resident.id)} className="bg-gray-400 text-white py-1 px-2 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50">
+                        Profile
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -152,13 +166,14 @@ const Form = () => {
                 
   <form onSubmit={handleSubmit} className="flex flex-col w-4/5">
     <label htmlFor="name" className="mt-4">
-      Name:
+      Resident's Name:
       <input
         type="text"
         id="name"
         value={name}
         onChange={(e) => setName(e.target.value)}
         className="form_input ml-5"
+        required
       />
     </label>
     <label htmlFor="roomNumber" className="mt-4">
@@ -169,18 +184,51 @@ const Form = () => {
         value={roomNumber}
         onChange={(e) => setRoomNumber(e.target.value)}
         className="form_input ml-5"
+        required
       />
     </label>
     <label htmlFor="careLevel" className="mt-4">
       Care Level:
-      <input
-        type="text"
-        id="careLevel"
-        value={careLevel}
-        onChange={(e) => setCareLevel(e.target.value)}
-        className="form_input ml-5"
-      />
+      <select
+          value={careLevel}
+          onChange={(e) => setCareLevel(e.target.value)}
+          className="form_input ml-5"
+          required
+            >
+          {[1, 2, 3, 4, 5, 6].map(level => (
+            <option key={level} value={level}>{level}</option>
+          ))}
+      </select>
     </label>
+    <label htmlFor="careLevel" className="mt-4">
+
+        Resident's Birthday:
+        <input
+          type="date"
+          name="birthday"
+          value={birthday}
+          onChange={(e) => setBirthday(e.target.value)}
+          className="form_input ml-5"
+          required
+        />
+      </label>
+
+      <label htmlFor="careLevel" className="mt-4">
+        Gender:
+        <select
+          name="gender"
+          value={gender}
+          onChange={(e) => setGender(e.target.value)}
+          className="form_input ml-5"
+
+          required
+        >
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </label>
+
     <div className="flex justify-between mt-6">
       <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
         Submit

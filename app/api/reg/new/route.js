@@ -7,6 +7,18 @@ export const POST = async (request) => {
     const {text,user_email} = await request.json();
     const openai = new OpenAI({ apiKey: process.env.OPEN_AI_KEY });
     const prompt = text
+    const system = 
+    `{
+      "prompt": "Create a JSON structure that represents regulations from the given input. For each regulation, include the requirements and specify how often each regulation needs to be checked for compliance.",
+      "example": {
+        "section": "Sec. 29-193",
+        "title": "Approval of Plans",
+        "requirements": "Submit plans in triplicate with a fee, pass final inspection.",
+        "check_frequency": "Before erection, installation, relocation, or alteration."
+      }
+    }`;
+
+    //`Please parse the following text into an array with the key "regulations" of JSON objects for each identified regulation. Each JSON object has fields Regulation Name (keep this very simple), Regulation Content (please fill out a short description), Frequency (integer, always set to 0 if not explicitly given), Tag (choose strictly between 'Licensing & Documentation', 'Care & Facilities', or 'Management'), Per-Resident (determine whether or not this needs to be done for each resident and store a boolean, anything resident related should be true) and Status (always set to boolean false): ${prompt}`
 
     const response = await openai.chat.completions.create({
       messages: [
@@ -16,7 +28,7 @@ export const POST = async (request) => {
         },
         {
           role: "user",
-          content: `Please parse the following text into an array with the key "regulations" of JSON objects for each identified regulation. Each JSON object has fields Regulation Name (keep this very simple), Regulation Content (please fill out a short description), Frequency (integer, always set to 0 if not explicitly given), Tag (choose strictly between 'Licensing & Documentation', 'Care & Facilities', or 'Management'), Per-Resident (determine whether or not this needs to be done for each resident and store a boolean, anything resident related should be true) and Status (always set to boolean false): ${prompt}`
+          content: `${system}: ${prompt}`
         }
       ],
       model: "gpt-3.5-turbo",

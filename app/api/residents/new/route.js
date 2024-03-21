@@ -21,21 +21,46 @@ const fetchTasks = async(email) => {
       }
 }
 
+function getCurrentAge(currentDateString, birthdayDateString) {
+  const currentDate = new Date(currentDateString);
+  const birthdayDate = new Date(birthdayDateString);
+
+  // Calculate the difference in years
+  let age = currentDate.getFullYear() - birthdayDate.getFullYear();
+
+  // Check if the birthday hasn't occurred yet this year
+  if (
+    currentDate.getMonth() < birthdayDate.getMonth() ||
+    (currentDate.getMonth() === birthdayDate.getMonth() &&
+      currentDate.getDate() < birthdayDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+}
+
 export const POST = async(request) => {
-    const { name, roomNumber, careLevel, date, user_email } = await request.json()
+    const { name, roomNumber, careLevel, date, user_email, responsible, birthday, gender} = await request.json()
     const req = await fetchTasks(user_email)
     const tasks = JSON.parse(req)
-
-    let { data: rows, error } = await supabase
-    .from('residents')
-    .insert({ name : name, date : date, care_level: careLevel, room: roomNumber, user_email: user_email, tasks: tasks})
-
-    const responseBody = JSON.stringify(rows);
+    const age = getCurrentAge(date, birthday)
+    
+    try{
+      let { data: rows, error } = await supabase
+      .from('residents')
+      .insert({ name : name, date : date, care_level: careLevel, room: roomNumber, responsible: responsible, birthday: birthday, age: age, tasks: tasks, gender: gender, user_email: user_email})
+      const responseBody = JSON.stringify(rows);
+      return new Response(responseBody, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    } catch(error) {
+      console.error("error inputting into supabase")
+    }
+   
 
         // Return response with rows data
-        return new Response(responseBody, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        
     }

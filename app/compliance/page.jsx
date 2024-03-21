@@ -26,7 +26,6 @@ const Page = () => {
           })
         });
         const data = await response.json();
-        console.log(data)
         setProcessedData(data)
       }
     } catch (error) {
@@ -54,6 +53,8 @@ const Page = () => {
           text: regulationsText,
           user_email: session?.user.email
       })});
+      const data = await response.json()
+      console.log(data)
       updateResidents()
       fetchRegulationsData()
       

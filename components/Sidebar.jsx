@@ -2,7 +2,7 @@
 const Sidebar = ({currentPage}) => {
   return (
     <div className='flex'>
-      <div className="w-64 bg-gray-100 h-screen">
+      <div className="w-64 bg-gray-100 h-screen overflow-y-auto">
         <ul className="p-4 pt-2">
           <li className={`py-4 pl-4 hover:bg-gray-200 transition-colors duration-300 flex items-center ${currentPage === "/" ? "font-bold" : ""}`}>
             <a href="/" className="block w-full h-full text-gray-600 hover:text-gray-800 flex items-center">
@@ -44,6 +44,15 @@ const Sidebar = ({currentPage}) => {
                 <img src="/assets/icons/analytics.svg" alt="Residents Icon" className="w-6 h-6" />
               </div>
               <div>Analytics</div>
+            </a>
+          </li>
+
+          <li className={`py-4 pl-4 hover:bg-gray-200 transition-colors duration-300 flex items-center ${currentPage === "/service" ? "font-bold" : ""}`}>
+            <a href="/service" className="block w-full h-full text-gray-600 hover:text-gray-800 flex items-center">
+              <div className="mr-2">
+                <img src="/assets/icons/plan.svg" alt="Service Plan Icon" className="w-6 h-6" />
+              </div>
+              <div>Service Plan</div>
             </a>
           </li>
 
