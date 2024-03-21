@@ -6,17 +6,69 @@ import WillowAi from '../../components/WillowAi';
 const Plan = () => {
   const router = useRouter();
   const [template_category, setTemplateCategory] = useState('Socialization');
+  const [template_stateKey, setTemplateStateKey] = useState('social'); // Initial state key
   const [key, setKey] = useState(0); // Initial key
   const [willowAiJson, setWillowAiJson] = useState({}); // State to hold the JSON from WillowAi
 
   const handleSaveJson = (json) => {
     setWillowAiJson(json);
     console.log("Received JSON from WillowAi:", willowAiJson);
+    populateFields(json);
+    console.log(servicePlan)
   };
+
+
+  const populateFields = (data) => {
+    const category = template_stateKey;
+
+    setServicePlan(prevServicePlan => {
+      const updatedServicePlan = { ...prevServicePlan };
+      Object.keys(updatedServicePlan).forEach(stateKey => {
+
+
+        if (stateKey === category && data) {
+
+          updatedServicePlan[stateKey] = {
+            ...updatedServicePlan[stateKey],
+            needs: data.processedNeed,
+            objective: data.plan,
+            time: data.timeFrame,
+            responsible: data.responsiblePerson,
+            method: data.method
+          };
+
+
+
+          const textareaNeeds = document.querySelector(`textarea[data-state-key = "${stateKey}"][data-type = "needs"]`)
+          const textareaPlan = document.querySelector(`textarea[data-state-key = "${stateKey}"][data-type = "objective"]`)
+          const textareaTime = document.querySelector(`textarea[data-state-key = "${stateKey}"][data-type = "time"]`)
+          const textareaResponsible = document.querySelector(`textarea[data-state-key = "${stateKey}"][data-type = "responsible"]`)
+          const textareaMethod = document.querySelector(`textarea[data-state-key = "${stateKey}"][data-type = "method"]`)
+
+          textareaNeeds.value = data.processedNeed;
+          textareaPlan.value = data.plan;
+          textareaTime.value = data.timeFrame;
+          textareaResponsible.value = data.responsiblePerson;
+          textareaMethod.value = data.method;
+
+
+
+        }
+      })
+
+      return updatedServicePlan;
+
+    })
+  }
 
   const handleEdit = (category) => {
     setTemplateCategory(category);
+    setTemplateStateKey(categories.find(item => item.category === category).stateKey);
+    setKey(prevKey => prevKey + 1); // Increment the key to force remount
   }
+
+
+
 
 
   const categories = [
@@ -374,6 +426,8 @@ const Plan = () => {
                       <tr key={`${index}-content`} className='font-normal'>
                         <th className="border border-gray-400 px-4 py-2">
                           <textarea
+                            data-state-key={item.stateKey}
+                            data-type="needs"
                             value={servicePlan[item.stateKey].needs}
                             onChange={(e) => handleInputChange(item.stateKey, 'needs', e.target.value)}
                             className="w-full h-full border-none outline-none resize-none font-normal"
@@ -381,6 +435,8 @@ const Plan = () => {
                         </th>
                         <th className="border border-gray-400 px-4 py-2">
                           <textarea
+                            data-state-key={item.stateKey}
+                            data-type="objective"
                             value={servicePlan[item.stateKey].objective}
                             onChange={(e) => handleInputChange(item.stateKey, 'objective', e.target.value)}
                             className="w-full h-full border-none outline-none resize-none font-normal"
@@ -388,6 +444,8 @@ const Plan = () => {
                         </th>
                         <th className="border border-gray-400 px-4 py-2">
                           <textarea
+                            data-state-key={item.stateKey}
+                            data-type="time"
                             value={servicePlan[item.stateKey].time}
                             onChange={(e) => handleInputChange(item.stateKey, 'time', e.target.value)}
                             className="w-full h-full border-none outline-none resize-none font-normal"
@@ -395,6 +453,8 @@ const Plan = () => {
                         </th>
                         <th className="border border-gray-400 px-4 py-2">
                           <textarea
+                            data-state-key={item.stateKey}
+                            data-type="responsible"
                             value={servicePlan[item.stateKey].responsible}
                             onChange={(e) => handleInputChange(item.stateKey, 'responsible', e.target.value)}
                             className="w-full h-full border-none outline-none resize-none font-normal"
@@ -402,6 +462,8 @@ const Plan = () => {
                         </th>
                         <th className="border border-gray-400 px-4 py-2">
                           <textarea
+                            data-state-key={item.stateKey}
+                            data-type="method"
                             value={servicePlan[item.stateKey].method}
                             onChange={(e) => handleInputChange(item.stateKey, 'method', e.target.value)}
                             className="w-full h-full border-none outline-none resize-none font-normal"
