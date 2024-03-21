@@ -1,11 +1,23 @@
 "use client"
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import WillowAi from '../../components/WillowAi';
 
 const Plan = () => {
   const router = useRouter();
-  
+  const [template_category, setTemplateCategory] = useState('Socialization');
+  const [key, setKey] = useState(0); // Initial key
+  const [willowAiJson, setWillowAiJson] = useState({}); // State to hold the JSON from WillowAi
+
+  const handleSaveJson = (json) => {
+    setWillowAiJson(json);
+    console.log("Received JSON from WillowAi:", willowAiJson);
+  };
+
+  const handleEdit = (category) => {
+    setTemplateCategory(category);
+  }
+
 
   const categories = [
     {
@@ -34,7 +46,7 @@ const Plan = () => {
       stateKey: "functioning"
     }
   ];
-  
+
   const [residentInfo, setResidentInfo] = useState({
     clientName: '',
     dob: '',
@@ -70,11 +82,11 @@ const Plan = () => {
     },
 
     mental: {
-        needs: '',
-        objective: '',
-        time: '',
-        responsible: '',
-        method: ''
+      needs: '',
+      objective: '',
+      time: '',
+      responsible: '',
+      method: ''
     },
 
     physical: {
@@ -122,7 +134,7 @@ const Plan = () => {
     });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
@@ -148,267 +160,276 @@ const Plan = () => {
   }
 
   return (
-    <div className="h-screen overflow-y-auto">
-      <div className="bg-white w-full py-4 flex flex-col">
-        <div className="text-center font-bold text-xl py-6">APPRAISAL/NEEDS AND SERVICE PLAN</div>
-        {/* First row */}
-        <div className="flex items-center h-full px-4">
-          <div className="w-1/3 pr-2 pl-2">
-            <label htmlFor="clientName" className="block text-sm font-medium text-gray-700 mb-1">CLIENT/RESIDENT NAME</label>
-            <input
-              type="text"
-              id="clientName"
-              name="clientName"
-              value={residentInfo.clientName}
-              onChange={handleInputChangeResident}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div className="w-1/9 border-l pr-2 pl-2">
-            <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">DATE OF BIRTH</label>
-            <input
-              type="date"
-              id="dob"
-              name="dob"
-              value={residentInfo.dob}
-              onChange={handleInputChangeResident}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div className="w-1/9 border-l pr-2 pl-2">
-            <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1">AGE</label>
-            <input
-              type="text"
-              id="age"
-              name="age"
-              value={residentInfo.age}
-              onChange={handleInputChangeResident}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div className="w-2/9 border-l pr-2 pl-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">SEX</label>
-            <div className="mt-1 flex">
-              <label className="inline-flex items-center mr-4">
+    <div className='flex'>
+      <div className='w-3/5'>
+        <div className="h-screen overflow-y-auto">
+          <div className="bg-white w-full py-4 flex flex-col">
+            <div className="text-center font-bold text-xl py-6">APPRAISAL/NEEDS AND SERVICE PLAN</div>
+            {/* First row */}
+            <div className="flex items-center h-full px-4">
+              <div className="w-1/3 pr-2 pl-2">
+                <label htmlFor="clientName" className="block text-sm font-medium text-gray-700 mb-1">CLIENT/RESIDENT NAME</label>
                 <input
-                  type="radio"
-                  className="form-radio"
-                  name="sex"
-                  value="male"
-                  checked={residentInfo.sex === "male"}
+                  type="text"
+                  id="clientName"
+                  name="clientName"
+                  value={residentInfo.clientName}
                   onChange={handleInputChangeResident}
+                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
-                <span className="ml-2">Male</span>
-              </label>
-              <label className="inline-flex items-center">
+              </div>
+              <div className="w-1/9 border-l pr-2 pl-2">
+                <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">DATE OF BIRTH</label>
                 <input
-                  type="radio"
-                  className="form-radio"
-                  name="sex"
-                  value="female"
-                  checked={residentInfo.sex === "female"}
+                  type="date"
+                  id="dob"
+                  name="dob"
+                  value={residentInfo.dob}
                   onChange={handleInputChangeResident}
+                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
-                <span className="ml-2">Female</span>
-              </label>
-            </div>
-          </div>
-          <div className="w-2/9 border-l pl-2">
-            <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">DATE</label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={residentInfo.date}
-              onChange={handleInputChangeResident}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-        </div>
-
-        {/* Second row */}
-        <div className="flex items-center h-full px-4 mt-4">
-        <div className="w-1/3 pr-2 pl-2">
-            <label htmlFor="facilityName" className="block text-sm font-medium text-gray-700 mb-1">FACILITY NAME</label>
-            <input
-              type="text"
-              id="facilityName"
-              name="facilityName"
-              value={facilityInfo.facilityName}
-              onChange={handleInputChangeFacility}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div className="w-1/3 pr-2 pl-2 border-l">
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">ADDRESS</label>
-            <input
-              type="text"
-              id="address"
-              name="address"
-              value={facilityInfo.address}
-              onChange={handleInputChangeFacility}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div className="w-1/3 border-l pr-2 pl-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">CHECK TYPE OF NEEDS AND SERVICE PLAN</label>
-            <div className="mt-1 flex">
-              <label className="inline-flex items-center mr-4">
+              </div>
+              <div className="w-1/9 border-l pr-2 pl-2">
+                <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1">AGE</label>
                 <input
-                  type="radio"
-                  className="form-radio"
-                  name="checkType"
-                  value="admission"
-                  checked={facilityInfo.checkType === "admission"}
-                  onChange={handleInputChangeFacility}
+                  type="text"
+                  id="age"
+                  name="age"
+                  value={residentInfo.age}
+                  onChange={handleInputChangeResident}
+                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
-                <span className="ml-2">Admission</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  className="form-radio"
-                  name="checkType"
-                  value="update"
-                  checked={facilityInfo.checkType === "update"}
-                  onChange={handleInputChangeFacility}
-                />
-                <span className="ml-2">Update</span>
-              </label>
-            </div>
-          </div>
-        </div>
-        {/* third row */}
-        <div className="flex items-center h-full px-4 mt-4">
-        <div className="w-1/3 pr-2 pl-2">
-            <label htmlFor="referral" className="block text-sm font-medium text-gray-700 mb-1">PERSON(S) OR AGENCY(IES) REFERRING CLIENT FOR PLACEMENT</label>
-            <input
-              type="text"
-              id="referral"
-              name="referral"
-              value={facilityInfo.referral}
-              onChange={handleInputChangeFacility}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div className="w-1/3 pr-2 pl-2 border-l">
-            <label htmlFor="licence" className="block text-sm font-medium text-gray-700 mb-1">FACILITY LICENCE NUMBER</label>
-            <input
-              type="text"
-              id="licence"
-              name="licence"
-              value={facilityInfo.licence}
-              onChange={handleInputChangeFacility}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div className="w-1/3 pr-2 pl-2 border-l">
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">TELEPHONE NUMBER</label>
-            <input
-              type="text"
-              id="phone"
-              name="phone"
-              value={facilityInfo.phone}
-              onChange={handleInputChangeFacility}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-        </div>
-        {/* Fourth row */}
-        <div className="flex justify-between items-center h-full px-4 mt-4">
-          <div className="w-full pr-4 pl-2">
-            <h2 className='pb-4'>BACKGROUND</h2>
-            <label htmlFor="backgroundInformation" className="block text-sm font-medium italic text-gray-700 mb-1">Brief description of client’s/resident’s medical history/emotional, behavioral, and physical problems; functional limitations; physical and mental; functional capabilities; ability to handle personal cash resources and perform simple homemaking tasks; client’s/resident’s likes and dislikes</label>
-              <textarea
-                id="backgroundInformation"
-                name="backgroundInformation"
-                value={residentInfo.backgroundInformation}
-                onChange={handleInputChangeResident}
-                className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                rows="4" // Adjust the number of rows as needed
-              ></textarea>
-          </div>
-        </div>
-
-        <div className="flex justify-between items-center h-full px-4 mt-4 py-4">
-
-        <table className="border-collapse w-full pt-10 font-normal">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="border border-gray-400 px-4 py-2">NEEDS</th>
-            <th className="border border-gray-400 px-4 py-2">OBJECTIVE/PLAN</th>
-            <th className="border border-gray-400 px-4 py-2">TIME FRAME</th>
-            <th className="border border-gray-400 px-4 py-2">PERSON(S) RESPONSIBLE</th>
-            <th className="border border-gray-400 px-4 py-2">METHOD OF EVALUATING PROGRESS</th>
-          </tr>
-        </thead>
-        <tbody>
-        {categories.map((item, index) => (
-      [
-        <tr>
-              <th className="border border-gray-400 px-4 py-2 font-normal text-left" colSpan="5">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="font-bold">{item.category}</span> — {item.description}
-                  </div>
-                  <div>
-                    <button className="px-3 py-1 bg-blue-500 text-white rounded"   style={{ width: '200px' }} onClick={() => handleEdit(item.stateKey)}>Edit to {item.stateKey}</button>
-                  </div>
+              </div>
+              <div className="w-2/9 border-l pr-2 pl-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">SEX</label>
+                <div className="mt-1 flex">
+                  <label className="inline-flex items-center mr-4">
+                    <input
+                      type="radio"
+                      className="form-radio"
+                      name="sex"
+                      value="male"
+                      checked={residentInfo.sex === "male"}
+                      onChange={handleInputChangeResident}
+                    />
+                    <span className="ml-2">Male</span>
+                  </label>
+                  <label className="inline-flex items-center">
+                    <input
+                      type="radio"
+                      className="form-radio"
+                      name="sex"
+                      value="female"
+                      checked={residentInfo.sex === "female"}
+                      onChange={handleInputChangeResident}
+                    />
+                    <span className="ml-2">Female</span>
+                  </label>
                 </div>
-              </th>
-            </tr>,
-        <tr key={`${index}-content`} className='font-normal'>
-          <th className="border border-gray-400 px-4 py-2">
-            <textarea 
-              value={servicePlan[item.stateKey].needs} 
-              onChange={(e) => handleInputChange(item.stateKey, 'needs', e.target.value)}
-              className="w-full h-full border-none outline-none resize-none font-normal" 
-            />
-          </th>
-          <th className="border border-gray-400 px-4 py-2">
-            <textarea 
-              value={servicePlan[item.stateKey].objective} 
-              onChange={(e) => handleInputChange(item.stateKey, 'objective', e.target.value)}
-              className="w-full h-full border-none outline-none resize-none font-normal" 
-            />
-          </th>
-          <th className="border border-gray-400 px-4 py-2">
-            <textarea 
-              value={servicePlan[item.stateKey].time} 
-              onChange={(e) => handleInputChange(item.stateKey, 'time', e.target.value)}
-              className="w-full h-full border-none outline-none resize-none font-normal" 
-            />
-          </th>
-          <th className="border border-gray-400 px-4 py-2">
-            <textarea 
-              value={servicePlan[item.stateKey].responsible} 
-              onChange={(e) => handleInputChange(item.stateKey, 'responsible', e.target.value)}
-              className="w-full h-full border-none outline-none resize-none font-normal" 
-            />
-          </th>
-          <th className="border border-gray-400 px-4 py-2">
-            <textarea 
-              value={servicePlan[item.stateKey].method} 
-              onChange={(e) => handleInputChange(item.stateKey, 'method', e.target.value)}
-              className="w-full h-full border-none outline-none resize-none font-normal" 
-            />
-          </th>
-        </tr>
-      ]
-    ))}
-        </tbody>
-      </table>
+              </div>
+              <div className="w-2/9 border-l pl-2">
+                <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">DATE</label>
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                  value={residentInfo.date}
+                  onChange={handleInputChangeResident}
+                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            {/* Second row */}
+            <div className="flex items-center h-full px-4 mt-4">
+              <div className="w-1/3 pr-2 pl-2">
+                <label htmlFor="facilityName" className="block text-sm font-medium text-gray-700 mb-1">FACILITY NAME</label>
+                <input
+                  type="text"
+                  id="facilityName"
+                  name="facilityName"
+                  value={facilityInfo.facilityName}
+                  onChange={handleInputChangeFacility}
+                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div className="w-1/3 pr-2 pl-2 border-l">
+                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">ADDRESS</label>
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                  value={facilityInfo.address}
+                  onChange={handleInputChangeFacility}
+                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div className="w-1/3 border-l pr-2 pl-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">CHECK TYPE OF NEEDS AND SERVICE PLAN</label>
+                <div className="mt-1 flex">
+                  <label className="inline-flex items-center mr-4">
+                    <input
+                      type="radio"
+                      className="form-radio"
+                      name="checkType"
+                      value="admission"
+                      checked={facilityInfo.checkType === "admission"}
+                      onChange={handleInputChangeFacility}
+                    />
+                    <span className="ml-2">Admission</span>
+                  </label>
+                  <label className="inline-flex items-center">
+                    <input
+                      type="radio"
+                      className="form-radio"
+                      name="checkType"
+                      value="update"
+                      checked={facilityInfo.checkType === "update"}
+                      onChange={handleInputChangeFacility}
+                    />
+                    <span className="ml-2">Update</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            {/* third row */}
+            <div className="flex items-center h-full px-4 mt-4">
+              <div className="w-1/3 pr-2 pl-2">
+                <label htmlFor="referral" className="block text-sm font-medium text-gray-700 mb-1">PERSON(S) OR AGENCY(IES) REFERRING CLIENT FOR PLACEMENT</label>
+                <input
+                  type="text"
+                  id="referral"
+                  name="referral"
+                  value={facilityInfo.referral}
+                  onChange={handleInputChangeFacility}
+                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div className="w-1/3 pr-2 pl-2 border-l">
+                <label htmlFor="licence" className="block text-sm font-medium text-gray-700 mb-1">FACILITY LICENCE NUMBER</label>
+                <input
+                  type="text"
+                  id="licence"
+                  name="licence"
+                  value={facilityInfo.licence}
+                  onChange={handleInputChangeFacility}
+                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div className="w-1/3 pr-2 pl-2 border-l">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">TELEPHONE NUMBER</label>
+                <input
+                  type="text"
+                  id="phone"
+                  name="phone"
+                  value={facilityInfo.phone}
+                  onChange={handleInputChangeFacility}
+                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+            {/* Fourth row */}
+            <div className="flex justify-between items-center h-full px-4 mt-4">
+              <div className="w-full pr-4 pl-2">
+                <h2 className='pb-4'>BACKGROUND</h2>
+                <label htmlFor="backgroundInformation" className="block text-sm font-medium italic text-gray-700 mb-1">Brief description of client’s/resident’s medical history/emotional, behavioral, and physical problems; functional limitations; physical and mental; functional capabilities; ability to handle personal cash resources and perform simple homemaking tasks; client’s/resident’s likes and dislikes</label>
+                <textarea
+                  id="backgroundInformation"
+                  name="backgroundInformation"
+                  value={residentInfo.backgroundInformation}
+                  onChange={handleInputChangeResident}
+                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  rows="4" // Adjust the number of rows as needed
+                ></textarea>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center h-full px-4 mt-4 py-4">
+
+              <table className="border-collapse w-full pt-10 font-normal">
+                <thead>
+                  <tr className="bg-gray-200">
+                    <th className="border border-gray-400 px-4 py-2">NEEDS</th>
+                    <th className="border border-gray-400 px-4 py-2">OBJECTIVE/PLAN</th>
+                    <th className="border border-gray-400 px-4 py-2">TIME FRAME</th>
+                    <th className="border border-gray-400 px-4 py-2">PERSON(S) RESPONSIBLE</th>
+                    <th className="border border-gray-400 px-4 py-2">METHOD OF EVALUATING PROGRESS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {categories.map((item, index) => (
+                    [
+                      <tr>
+                        <th className="border border-gray-400 px-4 py-2 font-normal text-left" colSpan="5">
+                          <div className="flex justify-between items-center">
+                            <div>
+                              <span className="font-bold">{item.category}</span> — {item.description}
+                            </div>
+                            <div className='pl-4'>
+                              <button className="px-3 py-1 bg-blue-500 text-white rounded" style={{ width: '160px' }} onClick={() => handleEdit(item.category)}>Edit {item.stateKey}</button>
+                            </div>
+                          </div>
+                        </th>
+                      </tr>,
+                      <tr key={`${index}-content`} className='font-normal'>
+                        <th className="border border-gray-400 px-4 py-2">
+                          <textarea
+                            value={servicePlan[item.stateKey].needs}
+                            onChange={(e) => handleInputChange(item.stateKey, 'needs', e.target.value)}
+                            className="w-full h-full border-none outline-none resize-none font-normal"
+                          />
+                        </th>
+                        <th className="border border-gray-400 px-4 py-2">
+                          <textarea
+                            value={servicePlan[item.stateKey].objective}
+                            onChange={(e) => handleInputChange(item.stateKey, 'objective', e.target.value)}
+                            className="w-full h-full border-none outline-none resize-none font-normal"
+                          />
+                        </th>
+                        <th className="border border-gray-400 px-4 py-2">
+                          <textarea
+                            value={servicePlan[item.stateKey].time}
+                            onChange={(e) => handleInputChange(item.stateKey, 'time', e.target.value)}
+                            className="w-full h-full border-none outline-none resize-none font-normal"
+                          />
+                        </th>
+                        <th className="border border-gray-400 px-4 py-2">
+                          <textarea
+                            value={servicePlan[item.stateKey].responsible}
+                            onChange={(e) => handleInputChange(item.stateKey, 'responsible', e.target.value)}
+                            className="w-full h-full border-none outline-none resize-none font-normal"
+                          />
+                        </th>
+                        <th className="border border-gray-400 px-4 py-2">
+                          <textarea
+                            value={servicePlan[item.stateKey].method}
+                            onChange={(e) => handleInputChange(item.stateKey, 'method', e.target.value)}
+                            className="w-full h-full border-none outline-none resize-none font-normal"
+                          />
+                        </th>
+                      </tr>
+                    ]
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="flex justify-center">
+              <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-block">
+                Submit
+              </button>
+            </div>
+
+          </div>
+
+        </div>
       </div>
-      <div className="flex justify-center">
-  <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-block">
-    Submit
-  </button>
-</div>
+
+      <div className='w-2/5 h-screen overflow-y-auto'>
+
+        <WillowAi key={key} category={template_category} onSave={handleSaveJson} />
 
       </div>
-      
     </div>
-    
   );
 };
 
