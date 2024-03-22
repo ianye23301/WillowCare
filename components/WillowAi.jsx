@@ -86,9 +86,8 @@ const WillowAi = ({ category, onSave }) => {
                 })
             });
             const data = await response.json();
-            console.log(data)
-            setProcessedPlan(data.Plans);
             await getMethods(data.Plans,need)
+            setProcessedPlan(data.Plans);
 
         } catch (error) {
             console.error('Error fetching service plan:', error);
@@ -111,8 +110,9 @@ const WillowAi = ({ category, onSave }) => {
                 })
             });
             const data = await response.json();
-            console.log(data)
             setProcessedMethod(data.Methods);
+            console.log(data)
+
         } catch (error) {
             console.error('Error fetching service plan:', error);
         }
