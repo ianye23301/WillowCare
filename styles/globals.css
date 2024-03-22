@@ -177,6 +177,11 @@ button:hover {
   border-color: #DDDDDD
 }
 
+.login {
+  background-color: #F3F5F8 !important
+
+}
+
 .shadow-custom {
   /* Set custom shadow using CSS variables */
   --shadow-offset-x: 0px;
