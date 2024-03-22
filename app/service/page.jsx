@@ -9,7 +9,6 @@ const Plan = () => {
   const [template_stateKey, setTemplateStateKey] = useState('social'); // Initial state key
   const [key, setKey] = useState(0); // Initial key
   const [willowAiJson, setWillowAiJson] = useState({}); // State to hold the JSON from WillowAi
-
   const handleSaveJson = (json) => {
     setWillowAiJson(json);
     console.log("Received JSON from WillowAi:", willowAiJson);
