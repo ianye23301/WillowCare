@@ -213,14 +213,14 @@ const Plan = () => {
 
   return (
     <div className='flex'>
-      <div className='w-3/5'>
-        <div className="h-screen overflow-y-auto">
-          <div className="bg-white w-full py-4 flex flex-col">
-            <div className="text-center font-bold text-xl py-6">APPRAISAL/NEEDS AND SERVICE PLAN</div>
+      <div className='w-2/3 '>
+        <div className="h-screen overflow-y-auto px-5 py-5">
+          <div className="bg-white w-full py-4 flex flex-col rounded-md borders shadow-custom">
+            <h1 className="text-center py-6">APPRAISAL/NEEDS AND SERVICE PLAN</h1>
             {/* First row */}
             <div className="flex items-center h-full px-4">
               <div className="w-1/3 pr-2 pl-2">
-                <label htmlFor="clientName" className="block text-sm font-medium text-gray-700 mb-1">CLIENT/RESIDENT NAME</label>
+                <label htmlFor="clientName" className="block text-sm  mb-1">CLIENT/RESIDENT NAME</label>
                 <input
                   type="text"
                   id="clientName"
@@ -231,7 +231,7 @@ const Plan = () => {
                 />
               </div>
               <div className="w-1/9 border-l pr-2 pl-2">
-                <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">DATE OF BIRTH</label>
+                <label htmlFor="dob" className="block text-sm  mb-1">DATE OF BIRTH</label>
                 <input
                   type="date"
                   id="dob"
@@ -242,7 +242,7 @@ const Plan = () => {
                 />
               </div>
               <div className="w-1/9 border-l pr-2 pl-2">
-                <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1">AGE</label>
+                <label htmlFor="age" className="block text-sm  mb-1">AGE</label>
                 <input
                   type="text"
                   id="age"
@@ -253,7 +253,7 @@ const Plan = () => {
                 />
               </div>
               <div className="w-2/9 border-l pr-2 pl-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">SEX</label>
+                <label className="block text-sm  mb-1">SEX</label>
                 <div className="mt-1 flex">
                   <label className="inline-flex items-center mr-4">
                     <input
@@ -280,7 +280,7 @@ const Plan = () => {
                 </div>
               </div>
               <div className="w-2/9 border-l pl-2">
-                <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">DATE</label>
+                <label htmlFor="date" className="block text-sm  -700 mb-1">DATE</label>
                 <input
                   type="date"
                   id="date"
@@ -295,7 +295,7 @@ const Plan = () => {
             {/* Second row */}
             <div className="flex items-center h-full px-4 mt-4">
               <div className="w-1/3 pr-2 pl-2">
-                <label htmlFor="facilityName" className="block text-sm font-medium text-gray-700 mb-1">FACILITY NAME</label>
+                <label htmlFor="facilityName" className="block text-sm  mb-1">FACILITY NAME</label>
                 <input
                   type="text"
                   id="facilityName"
@@ -306,7 +306,7 @@ const Plan = () => {
                 />
               </div>
               <div className="w-1/3 pr-2 pl-2 border-l">
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">ADDRESS</label>
+                <label htmlFor="address" className="block text-sm   mb-1">ADDRESS</label>
                 <input
                   type="text"
                   id="address"
@@ -317,7 +317,7 @@ const Plan = () => {
                 />
               </div>
               <div className="w-1/3 border-l pr-2 pl-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">CHECK TYPE OF NEEDS AND SERVICE PLAN</label>
+                <label className="block text-sm   mb-1">CHECK TYPE OF NEEDS AND SERVICE PLAN</label>
                 <div className="mt-1 flex">
                   <label className="inline-flex items-center mr-4">
                     <input
@@ -347,7 +347,7 @@ const Plan = () => {
             {/* third row */}
             <div className="flex items-center h-full px-4 mt-4">
               <div className="w-1/3 pr-2 pl-2">
-                <label htmlFor="referral" className="block text-sm font-medium text-gray-700 mb-1">PERSON(S) OR AGENCY(IES) REFERRING CLIENT FOR PLACEMENT</label>
+                <label htmlFor="referral" className="block text-sm   mb-1">PERSON(S) OR AGENCY(IES) REFERRING CLIENT FOR PLACEMENT</label>
                 <input
                   type="text"
                   id="referral"
@@ -358,7 +358,7 @@ const Plan = () => {
                 />
               </div>
               <div className="w-1/3 pr-2 pl-2 border-l">
-                <label htmlFor="licence" className="block text-sm font-medium text-gray-700 mb-1">FACILITY LICENCE NUMBER</label>
+                <label htmlFor="licence" className="block text-sm   mb-1">FACILITY LICENCE NUMBER</label>
                 <input
                   type="text"
                   id="licence"
@@ -369,7 +369,7 @@ const Plan = () => {
                 />
               </div>
               <div className="w-1/3 pr-2 pl-2 border-l">
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">TELEPHONE NUMBER</label>
+                <label htmlFor="phone" className="block text-sm  mb-1">TELEPHONE NUMBER</label>
                 <input
                   type="text"
                   id="phone"
@@ -384,7 +384,7 @@ const Plan = () => {
             <div className="flex justify-between items-center h-full px-4 mt-4">
               <div className="w-full pr-4 pl-2">
                 <h2 className='pb-4'>BACKGROUND</h2>
-                <label htmlFor="backgroundInformation" className="block text-sm font-medium italic text-gray-700 mb-1">Brief description of client’s/resident’s medical history/emotional, behavioral, and physical problems; functional limitations; physical and mental; functional capabilities; ability to handle personal cash resources and perform simple homemaking tasks; client’s/resident’s likes and dislikes</label>
+                <label htmlFor="backgroundInformation" className="block text-sm italic  mb-1">Brief description of client’s/resident’s medical history/emotional, behavioral, and physical problems; functional limitations; physical and mental; functional capabilities; ability to handle personal cash resources and perform simple homemaking tasks; client’s/resident’s likes and dislikes</label>
                 <textarea
                   id="backgroundInformation"
                   name="backgroundInformation"
@@ -398,95 +398,96 @@ const Plan = () => {
 
             <div className="flex justify-between items-center h-full px-4 mt-4 py-4">
 
-              <table className="border-collapse w-full pt-10 font-normal">
+              <table className="border-collapse w-full pt-10">
                 <thead>
                   <tr className="bg-gray-200">
-                    <th className="border border-gray-400 px-4 py-2">NEEDS</th>
-                    <th className="border border-gray-400 px-4 py-2">OBJECTIVE/PLAN</th>
-                    <th className="border border-gray-400 px-4 py-2">TIME FRAME</th>
-                    <th className="border border-gray-400 px-4 py-2">PERSON(S) RESPONSIBLE</th>
-                    <th className="border border-gray-400 px-4 py-2">METHOD OF EVALUATING PROGRESS</th>
+                    <th className="border label border-gray-400 px-4 py-2 w-1/5">NEEDS</th>
+                    <th className="border label border-gray-400 px-4 py-2 w-1/5">OBJECTIVE/PLAN</th>
+                    <th className="border label border-gray-400 px-4 py-2 w-1/5">TIME FRAME</th>
+                    <th className="border label border-gray-400 px-4 py-2 w-1/5">PERSON(S) RESPONSIBLE</th>
+                    <th className="border label border-gray-400 px-4 py-2 w-1/5">METHOD OF EVALUATING PROGRESS</th>
                   </tr>
                 </thead>
                 <tbody>
                   {categories.map((item, index) => (
                     [
-                      <tr>
-                        <th className="border border-gray-400 px-4 py-2 font-normal text-left" colSpan="5">
+                      <tr key={`category-${index}`}>
+                        <th className="border border-gray-400 px-4 py-2 text-left" colSpan="5">
                           <div className="flex justify-between items-center">
-                            <div>
+                            <div className='body-text'>
                               <span className="font-bold">{item.category}</span> — {item.description}
-                            </div>
-                            <div className='pl-4'>
-                              <button className="px-3 py-1 bg-blue-500 text-white rounded" style={{ width: '160px' }} onClick={() => handleEdit(item.category)}>Edit {item.stateKey}</button>
                             </div>
                           </div>
                         </th>
                       </tr>,
-                      <tr key={`${index}-content`} className='font-normal'>
+                      <tr key={`${index}-content`}>
                         <th className="border border-gray-400 px-4 py-2">
                           <textarea
+                            onClick={() => handleEdit(item.category)}
                             data-state-key={item.stateKey}
                             data-type="needs"
                             value={servicePlan[item.stateKey].needs}
                             onChange={(e) => handleInputChange(item.stateKey, 'needs', e.target.value)}
-                            className="w-full h-full border-none outline-none resize-none font-normal"
+                            className="w-full input-text h-64 border-none outline-none resize-none "
                           />
                         </th>
                         <th className="border border-gray-400 px-4 py-2">
                           <textarea
+                            onClick={() => handleEdit(item.category)}
                             data-state-key={item.stateKey}
                             data-type="objective"
                             value={servicePlan[item.stateKey].objective}
                             onChange={(e) => handleInputChange(item.stateKey, 'objective', e.target.value)}
-                            className="w-full h-full border-none outline-none resize-none font-normal"
+                            className="w-full input-text h-64 border-none outline-none resize-none"
                           />
                         </th>
                         <th className="border border-gray-400 px-4 py-2">
                           <textarea
+                            onClick={() => handleEdit(item.category)}
                             data-state-key={item.stateKey}
                             data-type="time"
                             value={servicePlan[item.stateKey].time}
                             onChange={(e) => handleInputChange(item.stateKey, 'time', e.target.value)}
-                            className="w-full h-full border-none outline-none resize-none font-normal"
+                            className="w-full input-text h-64 border-none outline-none resize-none"
                           />
                         </th>
                         <th className="border border-gray-400 px-4 py-2">
                           <textarea
+                            onClick={() => handleEdit(item.category)}
                             data-state-key={item.stateKey}
                             data-type="responsible"
                             value={servicePlan[item.stateKey].responsible}
                             onChange={(e) => handleInputChange(item.stateKey, 'responsible', e.target.value)}
-                            className="w-full h-full border-none outline-none resize-none font-normal"
+                            className="w-full input-text h-64 border-none outline-none overflow-hidden resize-none"
                           />
                         </th>
                         <th className="border border-gray-400 px-4 py-2">
                           <textarea
+                            onClick={() => handleEdit(item.category)}
                             data-state-key={item.stateKey}
                             data-type="method"
                             value={servicePlan[item.stateKey].method}
                             onChange={(e) => handleInputChange(item.stateKey, 'method', e.target.value)}
-                            className="w-full h-full border-none outline-none resize-none font-normal"
+                            className="w-full input-text h-64 border-none outline-none resize-none"
                           />
                         </th>
                       </tr>
                     ]
                   ))}
                 </tbody>
+
               </table>
             </div>
             <div className="flex justify-center">
-              <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-block">
+              <button onClick={handleSubmit} className="text-white py-2 px-4 rounded inline-block">
                 Submit
               </button>
             </div>
-
           </div>
-
         </div>
       </div>
 
-      <div className='w-2/5 h-screen overflow-y-auto'>
+      <div className='w-1/3 h-screen overflow-y-auto rounded-lg'>
 
         <WillowAi key={key} category={template_category} onSave={handleSaveJson} />
 

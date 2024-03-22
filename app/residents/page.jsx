@@ -104,62 +104,58 @@ const Form = () => {
 
 
   return (
-    <div className="container mx-auto">
-      {!showForm ? (
-        <div>
-          <div className="mt-8 mx-auto w-4/5 max-h-80 overflow-y-auto border rounded-lg relative">
-            <table className="w-full">
-              <thead className="sticky top-0 bg-gray-200">
-                <tr>
-                  <th className="p-2 text-left">Name</th>
-                  <th className="p-2 text-left" >Room Number</th>
-                  <th className="p-2 text-left">Care Level</th>
-                  <th className="p-2 text-left">Date</th>
-                  <th className="p-2 text-left">Tasks</th>
-                  <th className="p-2 text-left"></th>
+      !showForm ? (
+        <div className='h-screen'>
+        <div className="mt-8 mx-auto w-4/5 max-h-80 overflow-y-auto border rounded-lg relative">
+          <table className="w-full">
+            <thead className="sticky top-0 bg-gray-200">
+              <tr>
+                <th className="p-2 text-left">Name</th>
+                <th className="p-2 text-left">Room Number</th>
+                <th className="p-2 text-left">Care Level</th>
+                <th className="p-2 text-left">Date</th>
+                <th className="p-2 text-left">Tasks</th>
+                <th className="p-2 text-left">Actions</th> {/* Adjusted column header */}
+              </tr>
+            </thead>
+            <tbody>
+              {userResidents.map((resident, index) => (
+                <tr key={index} className="bg-gray-100">
+                  <td>{resident.name}</td>
+                  <td>{resident.room}</td>
+                  <td>{resident.care_level}</td>
+                  <td>{resident.date}</td>
+                  <td>
+                    <ul>
+                      {resident.tasks.tasks.map((task, taskIndex) => (
+                        <li key={taskIndex}>{task.rn}</li>
+                      ))}
+                    </ul>
+                  </td>
+                  <td>
+                    <button onClick={() => handleDelete(resident.id)} className="bg-red-600 text-white py-1 px-2 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50 mr-2">
+                      Delete
+                    </button>
+                    <button onClick={() => openProfile(resident.id)} className="bg-gray-400 text-white py-1 px-2 rounded hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">
+                      Profile
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {userResidents.map((resident, index) => (
-                  <tr key={index} className = "bg-gray-100">
-                    <td>{resident.name}</td>
-                    <td>{resident.room}</td>
-                    <td>{resident.care_level}</td>
-                    <td>{resident.date}</td>
-                    <td>
-                      <ul>
-                        {resident.tasks["tasks"].map((task, taskIndex) => (
-                          <li key={taskIndex}>{task["rn"]}</li>
-                        ))}
-                      </ul>
-                    </td>
-                    <td>
-                      <button onClick={() => handleDelete(resident.id)} className="bg-red-600 text-white py-1 px-2 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50">
-                        Delete
-                      </button>
-                    </td>
-                    <td>
-                      <button onClick={() => openProfile(resident.id)} className="bg-gray-400 text-white py-1 px-2 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50">
-                        Profile
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <button
-            type="button"
-            onClick={() => setShowForm(true)}
-            className="bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 block mx-auto mt-4"
-      >
-            {userResidents.length > 0
-    ? 'Add Another Resident'
-    : 'Add a Resident'}
-          </button>
+              ))}
+            </tbody>
+          </table>
         </div>
-      ) : (
-        <div>
+        <button
+          type="button"
+          onClick={() => setShowForm(true)}
+          className="bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 block mx-auto mt-4"
+        >
+          {userResidents.length > 0 ? 'Add Another Resident' : 'Add a Resident'}
+        </button>
+      </div>
+      
+      ) : 
+        <div className='h-screen'>
         <h2 className="text-2xl font-bold mb-4 text-center mt-10">Enter Resident Details</h2>
 
         <div className="flex items-center justify-center max-h-screen">
@@ -244,9 +240,7 @@ const Form = () => {
   </form>
 </div>
 </div>
-      )}
-    </div>
-  );
-};
+  )
+}
 
 export default Form;

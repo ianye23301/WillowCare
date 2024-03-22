@@ -17,7 +17,7 @@ const SearchBar = ({ onEnterKeyPress }) => {
   };
 
   return (
-    <div className="w-full flex pt-4 pl-4 pb-3 border-l border-gray-200">
+    <div className="w-full flex pt-4 pl-3 pb-3">
       <div className="w-96 bg-gray-100 rounded-lg overflow-hidden"> {/* Increased max-width */}
         <div className="flex items-center px-4 py-2.5">
           <input

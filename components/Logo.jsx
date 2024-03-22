@@ -4,18 +4,17 @@ import Image from 'next/image'
 
 const Logo = () => {
   return (
-    <logo className = 'flex justify-between items-center py-7 px-6'>
-        <Link href='/' className='flex gap-2 center'>
+    <logo className="flex justify-between items-center pb-7 py-6 px-6">
+      <Link href="/" className="flex gap-2 center">
         <Image
-          src='/assets/images/logo.svg'
-          alt='logo'
-          width={30}
-          height={30}
-          className='object-contain'
+          src="/assets/images/logo.png"
+          alt="logo"
+          width={180}
+          height={180}
         />
-        <p className='logo_text'>Willowcare</p>
       </Link>
     </logo>
+
   )
 }
 

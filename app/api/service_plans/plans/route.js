@@ -28,7 +28,7 @@ export const POST = async (request) => {
         const extra_info = userAddOns
 
         if (prompt == "") {
-            return new Response('Error: prompt is empty', { status: 400 });
+            return new Response('Errrrrror: prompt is empty', { status: 400 });
         }
 
         // const response = await gpt("Please return an array of JSON objects only. I will give you an input of regulations that senior care homes need to follow.", `Please parse the following text into an array with the key "regulations" of JSON objects for each identified regulation. Each JSON object has fields Regulation Name (keep this very simple), Regulation Content (please fill out a short description), Frequency (integer, always set to 0 if not explicitly given), Tag (choose strictly between 'Licensing & Documentation', 'Care & Facilities', or 'Management'), Per-Resident (determine whether or not this needs to be done for each resident and store a boolean, anything resident related should be true) and Status (always set to boolean false), Check_Frequency (string explaining how often this task should be done or checked), Requirements (string with everything that must be done to satisfy this regulation): ${prompt}`, "gpt-3.5-turbo", { type: "json_object" });

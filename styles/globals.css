@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+
+
 
 @tailwind base;
 @tailwind components;
@@ -48,13 +51,141 @@
 }
 
 
+:root {
+  --color-custom-gray: #232322;
+}
 
 body {
   font-family: 'Open Sans', sans-serif;
+   color: var(--color-custom-gray) !important;
 }
-.logo_text {
-  @apply max-sm:hidden font-semibold text-lg text-black tracking-wide;
+
+h1 {
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 600; /* Semibold */
 }
+
+h2 {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.label {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600; /* Bold */
+}
+
+
+.body-text {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400; /* Regular */
+}
+
+.search {
+  background-color: #362F56;
+}
+
+.input-text {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.navigation {
+  font-family: 'DMSans', sans-serif; /* Assuming DMSans is added to your project */
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.navigation-bold {
+  font-family: 'DMSans', sans-serif; /* Assuming DMSans is added to your project */
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+  background-color: #F3F5F8;
+}
+
+.navigation:hover {
+  font-family: 'DMSans', sans-serif; /* Assuming DMSans is added to your project */
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 400;
+  background-color: #F3F5F8;
+
+}
+
+.background{
+  background-color: #F4F2EE
+} 
+
+button {
+  background-color: #8271EB
+}
+
+button:hover {
+  background-color: #6d5ddc; /* Slightly darker color than #8271EB */
+}
+
+.button {
+  background-color: #8271EB
+}
+
+.button:hover {
+  background-color: #6d5ddc; /* Slightly darker color than #8271EB */
+}
+
+.gray-9 {
+  color: #E0E4E7
+}
+
+
+.gray-12 {
+  color: #F3F5F8
+}
+
+.gray-6 {
+  color: #DDDDDD
+}
+
+.gray-3 {
+  color: #828282
+}
+
+.gray-2 {
+  color: #5F6165
+}
+
+.borders {
+  border-width: 1px;
+  border-color: #DDDDDD
+}
+
+.shadow-custom {
+  /* Set custom shadow using CSS variables */
+  --shadow-offset-x: 0px;
+  --shadow-offset-y: 1px;
+  --shadow-blur-radius: 4px;
+  --shadow-color: rgba(0, 0, 0, 0.03); /* Adjust the shadow color and opacity as needed */
+  box-shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur-radius) var(--shadow-color);
+}
+
 
 .outline_btn {
   @apply rounded-full border border-black bg-transparent py-1 px-5 text-black transition-all hover:bg-black hover:text-white text-center text-sm flex items-center justify-center;

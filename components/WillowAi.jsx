@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 
 const WillowAi = ({ category, onSave }) => {
+    const [isLoading, setIsLoading] = useState(false);
+
     const [inputNeedsText, setInputNeedsText] = useState('');
     const [inputPlansText, setInputPlansText] = useState('');
     const [inputMethodText, setInputMethodText] = useState('');
@@ -19,7 +21,6 @@ const WillowAi = ({ category, onSave }) => {
     const [method, setMethod] = useState('');
 
     const cat = category[0] + category.toLowerCase().slice(1);
-
 
     const [jsonState, setJsonState] = useState({
         processedNeed: '',
@@ -44,6 +45,12 @@ const WillowAi = ({ category, onSave }) => {
         onSave(newState); // Call the onSave callback with the new state
     };
 
+    const submitForm = async () => {
+        setIsLoading(true);
+        await getNeed();
+        setIsLoading(false);
+    };
+
     const getNeed = async () => {
         // console.log('Submitted text:', inputNeedsText);
         try {
@@ -55,18 +62,17 @@ const WillowAi = ({ category, onSave }) => {
                 body: JSON.stringify({
                     text: inputNeedsText,
                     category: cat,
-                    // user_email: session.user.email
                 })
             });
             const data = await response.text();
-            console.log(data)
             setProcessedNeed(data);
+            await getPlans(data)
         } catch (error) {
             console.error('Error creating service need:', error);
         }
     }
 
-    const getPlans = async () => {
+    const getPlans = async (need) => {
         try {
             const response = await fetch('/api/service_plans/plans', {
                 method: "POST",
@@ -74,8 +80,7 @@ const WillowAi = ({ category, onSave }) => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    // user_email: session.user.email
-                    text: processedNeed,
+                    text: need,
                     userAddOns: inputPlansText,
                     category: cat,
                 })
@@ -83,12 +88,14 @@ const WillowAi = ({ category, onSave }) => {
             const data = await response.json();
             console.log(data)
             setProcessedPlan(data.Plans);
+            await getMethods(data.Plans,need)
+
         } catch (error) {
             console.error('Error fetching service plan:', error);
         }
     }
 
-    const getMethods = async () => {
+    const getMethods = async (plans,needs) => {
         try {
             const response = await fetch('/api/service_plans/methods', {
                 method: "POST",
@@ -97,8 +104,8 @@ const WillowAi = ({ category, onSave }) => {
                 },
                 body: JSON.stringify({
                     // user_email: session.user.email
-                    text: processedNeed,
-                    plan: plan,
+                    text: needs,
+                    plan: JSON.stringify({plans}),
                     userAddOns: inputMethodText,
                     category: cat,
                 })
@@ -133,7 +140,8 @@ const WillowAi = ({ category, onSave }) => {
 
     const renderPlanOptions = () => {
         return processedPlan.map((plan, index) => (
-            <div key={index}>
+            <div  key={index} className="pb-3">
+            <div key={index} className="input-text borders py-3 px-3 rounded-lg">
                 <input
                     type="checkbox"
                     id={`plan_${index}`}
@@ -144,12 +152,14 @@ const WillowAi = ({ category, onSave }) => {
                 />
                 <label htmlFor={`plan_${index}`} className="ml-2">{plan.Plan}</label>
             </div>
+            </div>
         ));
     };
 
     const renderMethodOptions = () => {
         return processedMethod.map((method, index) => (
-            <div key={index}>
+            <div key={index} className="pb-3">
+            <div className="input-text borders py-3 px-3 rounded-lg">
                 <input
                     type="checkbox"
                     id={`method_${index}`}
@@ -160,133 +170,134 @@ const WillowAi = ({ category, onSave }) => {
                 />
                 <label htmlFor={`method_${index}`} className="ml-2">{method.Method}</label>
             </div>
+            </div>
         ));
     }
 
 
 
     return (
-        <div className="space-y-6 bg-white p-6 rounded-lg shadow-lg" style={{ maxWidth: '600px', width: '100%', margin: '0 auto', padding: '20px' }}>
-            <h1 className="text-3xl font-semibold text-gray-800 mb-4">Willow AI bot - {cat}</h1>
+        <div>
+
+        <div className="space-y-6 bg-white p-6 rounded-lg borders shadow-custom" style={{ maxWidth: '600px', width: '100%', margin: '0 auto', padding: '20px' }}>
+            <h2 className="mb-3">Willow AI Assistant - {cat}</h2>
             <div>
-                <label htmlFor="inputNeedsText" className="block text-sm font-medium text-gray-700">Enter a few words on needs</label>
-                <input
+                <label htmlFor="inputNeedsText" className="block text-sm label">NEEDS</label>
+                <textarea
                     type="text"
                     name="inputNeedsText"
                     id="inputNeedsText"
                     value={inputNeedsText}
                     onChange={(e) => setInputNeedsText(e.target.value)}
-                    placeholder="Enter some text..."
-                    className="w-full mt-1 p-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Write a brief description of the resident’s needs. E.G. resident is lonely, resident does not eat well, resident has difficulty sleeping"
+                    className="w-full mt-1 p-3 h-24 border input-text border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 resize-none"
                 />
             </div>
-            <button
-                type="submit"
-                className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300"
-                onClick={getNeed}
-            >
-                Get Needs
-            </button>
-
-            <p className="text-gray-600">{processedNeed}</p>
+            
 
             <div>
-                <label htmlFor="inputPlansText" className="block text-sm font-medium text-gray-700">Extra Info on Plans</label>
-                <input
+                <label htmlFor="inputPlansText" className="block text-sm label">OBJECTIVE/PLAN (Optional)</label>
+                <textarea
                     type="text"
                     name="inputPlansText"
                     id="inputPlansText"
                     value={inputPlansText}
                     onChange={(e) => setInputPlansText(e.target.value)}
-                    placeholder="Enter some text..."
-                    className="w-full mt-1 p-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Share an objective or plan for need. E.G. encourage social interactions, customize appealing, nutritious meals, implement relaxing bedtime routines"
+                    className="w-full mt-1 p-3 h-24 border input-text border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 resize-none"
                 />
             </div>
-            <button
-                type="submit"
-                className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300"
-                onClick={getPlans}
-            >
-                Get Plans
-            </button>
+          
 
-            <fieldset>
-                <legend className="text-sm font-medium text-gray-700">Select Plans:</legend>
-                <div className="mt-2 space-y-2">{renderPlanOptions()}</div>
-            </fieldset>
-            {plan && (
-                <div className="mt-4">
-                    <legend className="text-sm font-medium text-gray-700">Select Plans:</legend>
-                    <p className="text-gray-600">{plan}</p>
-                </div>
-            )}
+            
 
             {/* input for time frame */}
             <div>
-                <label htmlFor="timeFrame" className="block text-sm font-medium text-gray-700">Time Frame</label>
+                <label htmlFor="timeFrame" className="block text-sm label">Time Frame</label>
                 <input
                     type="text"
                     name="timeFrame"
                     id="timeFrame"
                     value={timeFrame}
                     onChange={(e) => setTimeFrame(e.target.value)}
-                    placeholder="Enter some text..."
-                    className="w-full mt-1 p-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Add a time frame. E.G. 6 months, 3 weeks"
+                    className="w-full mt-1 p-3 border input-text border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
                 />
             </div>
 
             {/* input for responsible person */}
             <div>
-                <label htmlFor="responsiblePerson" className="block text-sm font-medium text-gray-700">Responsible Person</label>
+                <label htmlFor="responsiblePerson" className="block text-sm label">Responsible Person</label>
                 <input
                     type="text"
                     name="responsiblePerson"
                     id="responsiblePerson"
                     value={responsiblePerson}
                     onChange={(e) => setResponsiblePerson(e.target.value)}
-                    placeholder="Enter some text..."
-                    className="w-full mt-1 p-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Name the person/people responsible for this plan"
+                    className="w-full mt-1 p-3 border input-text border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
                 />
             </div>
 
             <div>
-                <label htmlFor="inputMethodText" className="block text-sm font-medium text-gray-700">Extra Info on Methods</label>
-                <input
+                <label htmlFor="inputMethodText" className="block text-sm label">METHOD OF EVALUATING PROGRESS (Optional)</label>
+                <textarea
                     type="text"
                     name="inputMethodText"
                     id="inputMethodText"
                     value={inputMethodText}
                     onChange={(e) => setInputMethodText(e.target.value)}
-                    placeholder="Enter some text..."
-                    className="w-full mt-1 p-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Share an objective or plan for need. E.G. monitor engagement in social activities, track nutritional and meal enjoyment, assess sleep quality and duration"
+                    className="w-full mt-1 p-3 h-24 border input-text border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 resize-none"
                 />
             </div>
+
             <button
                 type='submit'
-                className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300"
-                onClick={getMethods}
+                className="w-full button text-white font-bold py-3 px-4 rounded-lg transition duration-300"
+                onClick={submitForm}
             >
-                Get Methods
-            </button>
+                {isLoading ? 'Loading...' : 'Generate'}
+            </button>  
 
-            <fieldset>
-                <legend className='text-sm font-medium text-gray-700'>Select Methods:</legend>
-                {renderMethodOptions()}
-            </fieldset>
+            </div> 
 
-            {method && (
-                <div>
-                    <h2 className='text-xl font-bold mt-4'>Selected Methods:</h2>
-                    <p>{method}</p>
+
+            
+            {!isLoading && processedNeed && processedPlan && processedMethod && (
+                <div className="pt-4">
+                <div className=" space-y-6 bg-white p-6 rounded-lg borders shadow-custom" style={{ maxWidth: '600px', width: '100%', margin: '0 auto', padding: '20px' }}>
+
+
+                    <div className="label py-3">NEEDS:</div>
+                    <p className="input-text py-6 px-4 borders rounded-lg">{processedNeed}</p>
+                    <fieldset>
+                        <legend className="text-sm label pt-5 pb-3">Choose OBJECTIVE/PLAN Response</legend>
+                        <div className="mt-2">{renderPlanOptions()}</div>
+                    </fieldset>
+                    <fieldset>
+                        <legend className='text-sm label pt-6 pb-4'>Choose METHOD Response</legend>
+                        {renderMethodOptions()}
+                    </fieldset>
+
+
+
+                <button
+                    type='submit'
+                    className="w-full button text-white font-bold py-3 px-4 rounded-lg transition duration-300"
+                    onClick={handleJSONSubmit}
+                    > Save
+                </button>
+
                 </div>
+                </div>
+                
+
+
             )}
 
-            <button
-                type='submit'
-                className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300"
-                onClick={handleJSONSubmit}
-            > Save
-            </button>
+            
+        
         </div>
     )
 }

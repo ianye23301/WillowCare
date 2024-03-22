@@ -25,7 +25,7 @@ const Page = () => {
         Welcome to <span style={{ color: 'purple', background: 'linear-gradient(45deg, #7928CA, #FF0080)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>WillowCare</span>
       </h1>
       <p className="mb-8 text-center">Enjoy an all-in-one elder care management software that <br/>tracks your tasks, residents, compliance, and more!</p>
-      <a href="/compliance" className="bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 w-32 mb-8 text-center">
+      <a href="/compliance" className="button text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 w-32 mb-8 text-center">
         Get Started
       </a>
       <div className={`flex w-full justify-center mb-12 ${animationLoaded ? 'fade-in' : ''}`}>

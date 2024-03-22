@@ -23,18 +23,18 @@ const Layout = ({ children }) => {
 
     return (
         <div className="flex">
-            <div className="flex flex-col">
+            <div className="flex flex-col w-1/6 borders">
                 <Logo />
                 <Sidebar currentPage={currentPage}/> 
             </div>
             <div className="flex-1 flex flex-col">
 
-                <div className='flex flex-row'>
+                <div className='flex flex-row h-13 borders'>
                     <Searchbar onEnterKeyPress={onEnterKeyPress}/>
 
                     {!loading && (session?.user ? (
                     <div className='flex gap-3 p-4'>
-                        <button type='button' onClick={signOut} className='outline_btn w-40 h-10 mt-1.5'>
+                        <button type='button' onClick={signOut} className='outline_btn w-32 h-10 mt-1.5'>
                             Sign Out
                         </button>
                         <Link href='/profile'>
@@ -49,19 +49,15 @@ const Layout = ({ children }) => {
                     </div>
                 ) : (
                     <div className='flex gap-3 p-4'>
-                        <button type='button' onClick={signIn} className='outline_btn w-40 h-10 mt-1.5'>
+                        <button type='button' onClick={signIn} className='outline_btn w-32 h-10 mt-1.5'>
                             Sign In
                         </button>
                     </div>
                 )
                 )}
 
-
                 </div>
-                
-
-                
-                <div className='flex-1 bg-gray-200'>
+                <div className='flex-1 background'>
                     {children} 
                 </div>
             </div>
