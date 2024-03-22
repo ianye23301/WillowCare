@@ -188,7 +188,44 @@ const Plan = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      // Send the JSON data to the API
+      const response = await fetch('/api/pdf_gen', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          servicePlan,
+          residentInfo,
+          facilityInfo,
+        }),
+      });
 
+      if (response.ok) {
+        // Get the bytes from the response
+        const blob = await response.blob();
+
+        // Create a URL for the blob
+        const blobUrl = window.URL.createObjectURL(blob);
+
+        // Create a temporary link element and trigger the download
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = 'downloaded_pdf.pdf'; // Name the download file as desired
+        document.body.appendChild(link); // Append to the document
+        link.click(); // Trigger the download
+
+        // Clean up by removing the temporary link element
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl); // Free up memory by revoking the blob URL
+      } else {
+        console.error('Server responded with an error during PDF download.');
+      }
+
+    } catch (error) {
+      console.error('Failed to submit the form', error);
+    }
     try {
       const response = await fetch('/api/service/send', {
         method: "POST",
