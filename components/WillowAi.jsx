@@ -74,6 +74,7 @@ const WillowAi = ({ category, onSave }) => {
 
     const getPlans = async (need) => {
         try {
+            console.log("we got here")
             const response = await fetch('/api/service_plans/plans', {
                 method: "POST",
                 headers: {
