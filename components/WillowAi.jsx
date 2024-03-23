@@ -52,7 +52,6 @@ const WillowAi = ({ category, onSave }) => {
     };
 
     const getNeed = async () => {
-        // console.log('Submitted text:', inputNeedsText);
         try {
             const response = await fetch('/api/service_plans/needs', {
                 method: "POST",
