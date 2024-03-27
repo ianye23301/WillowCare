@@ -38,7 +38,7 @@ export const POST = async (request) => {
         You will be working with a document which is a template from the State of California—Health and Human Services Agency, specifically the California Department of Social Services, Community Care Licensing division. The document is an 'Appraisal/Needs and Services Plan' used to evaluate the needs of clients or residents within community care facilities and develop a comprehensive service plan to address those needs. It covers areas such as socialization, emotional and mental health, physical health, and functioning skills. The document also includes sections for documenting background information about the client or resident, objectives and plans for meeting their needs, responsible persons for implementation, and methods for evaluating progress.
 
         Given a few words relating to the ${cat} category, 
-        fill out the "needs" section of the service plan as if you were a care provider in 1-2  sentences 
+        fill out the "needs" section of the service plan as if you were a care provider in 1-2  sentences. Don't write anything at the beginning like **Needs** or "In the plans section" simply write it as if you were a care provider filling this out to present to a family
         `;
 
         const response = await openai.chat.completions.create({
