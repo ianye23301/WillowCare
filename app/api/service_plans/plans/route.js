@@ -22,13 +22,13 @@ function gpt(system_input, user_input, model, response_format) {
 
 export const POST = async (request) => {
     try {
-        const { text, userAddOns, category } = await request.json();
+        const { text, userAddOns, category, time_frame } = await request.json();
         const openai = new OpenAI({ apiKey: process.env.OPEN_AI_KEY });
         const prompt = text
         const extra_info = userAddOns
 
         if (prompt == "") {
-            return new Response('Errrrrror: prompt is empty', { status: 400 });
+            return new Response('Error: prompt is empty', { status: 400 });
         }
 
         // const response = await gpt("Please return an array of JSON objects only. I will give you an input of regulations that senior care homes need to follow.", `Please parse the following text into an array with the key "regulations" of JSON objects for each identified regulation. Each JSON object has fields Regulation Name (keep this very simple), Regulation Content (please fill out a short description), Frequency (integer, always set to 0 if not explicitly given), Tag (choose strictly between 'Licensing & Documentation', 'Care & Facilities', or 'Management'), Per-Resident (determine whether or not this needs to be done for each resident and store a boolean, anything resident related should be true) and Status (always set to boolean false), Check_Frequency (string explaining how often this task should be done or checked), Requirements (string with everything that must be done to satisfy this regulation): ${prompt}`, "gpt-3.5-turbo", { type: "json_object" });
@@ -39,8 +39,10 @@ export const POST = async (request) => {
         You will be working with a document which is a template from the State of California—Health and Human Services Agency, specifically the California Department of Social Services, Community Care Licensing division. The document is an 'Appraisal/Needs and Services Plan' used to evaluate the needs of clients or residents within community care facilities and develop a comprehensive service plan to address those needs. It covers areas such as socialization, emotional and mental health, physical health, and functioning skills. The document also includes sections for documenting background information about the client or resident, objectives and plans for meeting their needs, responsible persons for implementation, and methods for evaluating progress.
         
         Given this need relating to the ${cat} category, 
-        give me 3 potential plans
+        give me 3 potential plans.
+        Fill out the "needs" section of the service plan as if you were a care provider in 1-2  sentences. Don't write anything at the beginning like **Needs** or "In the plans section" simply write it as if you were a care provider filling this out to present to a family
         Consider and be specific to: ${extra_info}
+        Make it done in a time frame of ${time_frame}
 
         Return as JSON like so:
           "Plans": [
