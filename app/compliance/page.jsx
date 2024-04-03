@@ -148,7 +148,7 @@ const Page = () => {
         </div>
       </div>
       :
-      <div className="flex flex-col mt-20 items-center">
+      <div className="flex flex-col mt-20 items-center h-screen">
         <div className="bg-white w-4/5 p-8 rounded-lg">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-700 mr-2">Overall Compliance</h2>

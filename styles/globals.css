@@ -147,12 +147,21 @@ button:hover {
   background-color: #8271EB
 }
 
+.button:focus {
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 0 3px rgba(130, 113, 235, 0.5); /* Add custom focus styling */
+}
+
 .button:hover {
   background-color: #6d5ddc; /* Slightly darker color than #8271EB */
 }
 
 .gray-9 {
   color: #E0E4E7
+}
+
+.gray-9-bg {
+  background-color: #E0E4E7
 }
 
 
@@ -162,6 +171,10 @@ button:hover {
 
 .gray-6 {
   color: #DDDDDD
+}
+
+.gray-6-bg {
+  background-color: #DDDDDD
 }
 
 .gray-3 {
@@ -191,6 +204,9 @@ button:hover {
   box-shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur-radius) var(--shadow-color);
 }
 
+.link-text {
+  color: #6d5ddc
+}
 
 .outline_btn {
   @apply rounded-full border border-black bg-transparent py-1 px-5 text-black transition-all hover:bg-black hover:text-white text-center text-sm flex items-center justify-center;

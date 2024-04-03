@@ -42,8 +42,8 @@ function ProfilePage({params}) {
   }, []);
 
   return (
-    (userInfo !== null && 
-      <div className="flex justify-center items-start mt-10 h-screen">
+    (userInfo !== null ? 
+      <div className="flex justify-center mt-10 h-screen overflow-y-auto">
         <div className="bg-white p-8 rounded-lg w-3/4 h-1/3 flex flex-col">
           <h2 className="font-bold mb-4">{userInfo.name}</h2>
           <button onClick={() => openService(residentId)} className="bg-gray-400 text-white py-1 px-2 rounded hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50">
@@ -51,6 +51,13 @@ function ProfilePage({params}) {
           </button>
         </div>
       </div>
+      :
+      <div className="flex justify-center mt-10 h-screen overflow-y-auto">
+        <div className="bg-white p-8 rounded-lg w-3/4 h-1/3 flex flex-col">
+          
+        </div>
+      </div>
+
     )
     
   )

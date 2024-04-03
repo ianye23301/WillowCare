@@ -4,6 +4,10 @@ import { useRouter } from 'next/navigation';
 import WillowAi from '../../components/WillowAi';
 
 const Plan = () => {
+  
+  
+
+
   const router = useRouter();
   const [template_category, setTemplateCategory] = useState('Socialization');
   const [template_stateKey, setTemplateStateKey] = useState('social'); // Initial state key
@@ -426,7 +430,7 @@ const Plan = () => {
                   name="backgroundInformation"
                   value={residentInfo.backgroundInformation}
                   onChange={handleInputChangeResident}
-                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm resize-none"
                   rows="4" // Adjust the number of rows as needed
                 ></textarea>
               </div>

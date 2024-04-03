@@ -2,8 +2,8 @@ const Sidebar = ({ currentPage }) => {
   // Define an array of menu items with their corresponding paths and icons
   const menuItems = [
     { path: "/", icon: "/assets/icons/dashboard-icon.svg", label: "Home" },
-    // { path: "/compliance", icon: "/assets/icons/compliance-icon.svg", label: "Compliance" },
-    // { path: "/residents", icon: "/assets/icons/residents-icon.svg", label: "Residents" },
+    { path: "/compliance", icon: "/assets/icons/compliance-icon.svg", label: "Compliance" },
+    { path: "/residents", icon: "/assets/icons/residents-icon.svg", label: "Residents" },
     { path: "/service", icon: "/assets/icons/plan.svg", label: "Service Plan" },
   ];
 

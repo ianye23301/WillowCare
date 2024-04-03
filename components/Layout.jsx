@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
                 <Logo />
             </div>
             <div className="flex-1 flex flex-col">
-                <div className='flex borders items-center  search sticky top-0'>
+                <div className='flex  items-center  search sticky top-0'>
                     <Searchbar onEnterKeyPress={onEnterKeyPress}/>
                     {!loading && (session?.user ? (
                         <div className='flex items-center gap-3'>

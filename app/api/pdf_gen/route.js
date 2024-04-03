@@ -61,9 +61,9 @@ export const POST = async (req) => {
         form.getTextField('FACILITY LICENSE NUMBER').setText(inputData.facilityInfo.licence);
         form.getTextField('DATE OF BIRTH').setText(inputData.residentInfo.dob);
         form.getTextField('DATE_4').setText(inputData.residentInfo.date);
-        if (inputData.residentInfo.sex == "male") {
+        if (inputData.residentInfo.sex.toLowerCase() == "male") {
             form.getCheckBox('Male').check();
-        } else if (inputData.residentInfo.sex == "female") {
+        } else if (inputData.residentInfo.sex.toLowerCase() == "female") {
             form.getCheckBox('Female').check();
         }
         form.getTextField('DATE COMPLETING THIS FORM').setText(inputData.residentInfo.date);
