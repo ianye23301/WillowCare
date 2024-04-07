@@ -110,13 +110,14 @@ const Plan = ({params}) => {
         });
         const data = await response.json();
         console.log(data[0])
+        const date = new Date().toISOString().split('T')[0]
         setResidentInfo({
           ...residentInfo,
-          clientName: data[0].name,
-          dob: data[0].birthday,
-          age: data[0].age,
-          sex: data[0].gender,
-          date: data[0].date
+          clientName: data[0].basic_info.name,
+          dob: data[0].basic_info.birthday,
+          age: data[0].basic_info.age,
+          sex: data[0].basic_info.gender,
+          date: date
         })
 
         if (data[0].gender === "Male") {

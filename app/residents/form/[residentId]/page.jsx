@@ -10,8 +10,10 @@ const LoadingIndicator = () => (
   </div>
 );
 
-const Form = () => {
-  const [loading, setLoading] = useState(true);
+const Form = ({params}) => {
+  const {residentId} = params
+  const [receivedData, setReceivedData] = useState(false);
+
   const [residentInfo, setResidentInfo] = useState({
     name: '',
     roomNumber: '',
@@ -19,7 +21,6 @@ const Form = () => {
     SSN: '',
     birthday: '',
     gender: 'Male',
-    pic: {},
     roomPhone: '',
     address: '',
     phoneNumber: '',
@@ -42,28 +43,59 @@ const Form = () => {
 
 
 
+
+
   const [submitting, setSubmitting] = useState(false);
   const { data: session, status } = useSession();
-  const [userResidents, setUserResidents] = useState([]);
-  const [showForm, setShowForm] = useState(false);
   const router = useRouter();
 
-  const fetchUserResidents = async () => {
-    setLoading(true);
+  const fetchResidentInfo = async () => {
     try {
-      const response = await fetch('/api/residents/fetch', {
+      const response = await fetch('/api/residents/fetch_single', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          user_email: session?.user.email
+          id: residentId
         })
       });
       const data = await response.json();
+      const obj = data[0]
+      setResidentInfo({
+        ...residentInfo,
+        name: obj.basic_info.name,
+        birthday: obj.basic_info.birthday,
+        age: obj.basic_info.age,
+        address: obj.basic_info.address,
+        gender: obj.basic_info.gender,
+        email: obj.basic_info.email,
+        phoneNumber: obj.basic_info.phoneNumber,
+        placeOfBirth: obj.basic_info.placeOfBirth,
+        roomNumber: obj.basic_info.roomNumber,
+        roomPhone: obj.basic_info.roomPhone,
+        ssn: obj.basic_info.ssn,
+        eyeColor: obj.misc.eyeColor,
+        hairColor: obj.misc.hairColor,
+        height_weight: obj.misc.height_weight,
+        married: obj.misc.married,
+        race: obj.misc.race,
+        religion: obj.misc.religion,
+        admissionDate: obj.stay.admissionDate,
+        mobility: obj.stay.mobility,
+        marks: obj.stay.marks,
+        dementia: (obj.stay.dementia === 'true' ? true : false),
+        careLevel: obj.stay.careLevel,
+        fileNumber: obj.stay.fileNumber,
+        income: obj.stay.income,
+        notes: obj.stay.notes
+      })
+      setDiagnoses(obj.stay.diagnoses.split(','))
+      setAllergies(obj.stay.allergies.split(','))
+      setFlags(obj.stay.flags.split(','))
+
       console.log(data)
-      setUserResidents(data);
-      setLoading(false);
+      setReceivedData(true);
     } catch (error) {
       console.error('Error fetching regulations data:', error);
       setLoading(false);
@@ -72,7 +104,7 @@ const Form = () => {
 
   useEffect(() => {
     if (status === 'loading') return;
-    fetchUserResidents();
+    fetchResidentInfo();
   }, [status, router]);
 
   useEffect(() => {
@@ -81,6 +113,11 @@ const Form = () => {
       router.push('/api/auth/signin');
     }
   }, [status, router]);
+
+  const backToProfile = (residentId) => {
+    router.push(`/residents/profile/${residentId}`);
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,11 +138,11 @@ const Form = () => {
     formData.append('flags', flags);
     formData.append('user_email', session?.user.email);
     formData.append('responsible', session?.user.name);
-    formData.append('file', residentInfo.pic);
+    formData.append('id', residentId)
 
     try {
       
-      const response = await fetch('/api/residents/new', {
+      const response = await fetch('/api/residents/edit', {
         method: 'POST',
         body: formData
       });
@@ -138,8 +175,7 @@ const Form = () => {
           notes: ''
 
         });
-        setShowForm(false);
-        fetchUserResidents();
+        backToProfile(residentId);
       } else {
         console.error('Failed to submit data:', response.statusText);
       }
@@ -150,26 +186,6 @@ const Form = () => {
     }
   };
 
-  const handleDelete = async (residentId) => {
-    setUserResidents((prevResidents) =>
-      prevResidents.filter((resident) => resident.id !== residentId)
-    );
-    try {
-      const response = await fetch(`/api/residents/delete`, {
-        method: 'POST',
-        body: JSON.stringify({
-          residentId: residentId
-        })
-      });
-      if (response.ok) {
-        console.log('User deleted successfully');
-      } else {
-        console.error('Failed to delete user:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error deleting user:', error);
-    }
-  };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -177,17 +193,8 @@ const Form = () => {
     setResidentInfo({ ...residentInfo, pic: file });
   };
 
-  const openProfile = (residentId) => {
-    router.push(`/residents/profile/${residentId}`);
-  };
-
-  const openService = (residentId) => {
-    router.push(`/service/${residentId}`);
-  };
-
-  const openPlan = (residentId) => {
-    router.push(`/assessment/${residentId}`);
-  };
+  
+  
 
   const commonRaces = [
     'White',
@@ -290,19 +297,6 @@ const Form = () => {
         setDropdown(category)
       }
     }
-
-
-    // if (category === "diagnoses") {
-    //   setShowDiagonses(!showDiagnoses)
-    // }
-
-    // if (category === "allergies") {
-    //   setShowAllergies(!showAllergies)
-    // }
-
-    // if (category === "flags") {
-    //   setShowFlags(!showFlags)
-    // }
     console.log(category)
   };
 
@@ -340,111 +334,10 @@ const Form = () => {
     }); // Update the state with the new income array
   };
 
-  return !showForm ? (
-    loading ? (
-      <LoadingIndicator />
-    ) : (
-      <div className="flex flex-col items-center h-screen overflow-y-auto">
-        <div className="w-full">
-          <div className="mt-5 mx-5 bg-white borders shadow-custom rounded-lg">
-            <h1 className="px-5 py-3">Resident's List</h1>
-          </div>
-          <div className="p-5">
-            <div className="w-full p-2 borders rounded-lg bg-white shadow-custom">
-              <table className="w-full">
-                <thead className="label border-b">
-                  <tr>
-                    <th className="p-1"></th>
-                    <th className="p-1 text-left">Name</th>
-                    <th className="p-1 text-left">Age</th>
-                    <th className="p-1 text-left">Gender</th>
-                    <th className="p-1 text-left">Room Number</th>
-                    <th className="p-1 text-left">Admitted</th>
-                    <th className="p-1 text-left">Mobility</th>
-                    <th className="p-1 text-left">Quick Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {userResidents.map((resident, index) => (
-                    <tr key={index}>
-                      <td>
-                        {resident.image && (
-                          <img
-                            src={resident.image}
-                            alt="Resident"
-                            className="w-12 h-12 object-cover p-1 rounded-full"
-                          />
-                        )}
-                      </td>
-                      <td
-                        onClick={() => openProfile(resident.id)}
-                        className="p-1 cursor-pointer link-text hover:underline"
-                        title="Open Profile"
-                      >
-                        {resident.basic_info.name}{' '}
-                      </td>
-                      <td className="p-1">{resident.basic_info.age}</td>
-                      <td className="p-1">{resident.basic_info.gender}</td>
-                      <td className="p-1">{resident.basic_info.roomNumber}</td>
-                      <td className="p-1">{resident.stay.admissionDate}</td>
-                      <td className="p-1">{resident.stay.mobility}</td>
-                      <td className="p-1">
-                        <button
-                          onClick={() => openPlan(resident.id)}
-                          className=" text-white py-1 px-2 rounded button focus:outline-none focus:ring-2 mr-2"
-                          title="Open Assessment"
-                        >
-                          <img
-                            src="/assets/icons/assessment.svg"
-                            alt="assessment icon"
-                            className="w-6 h-6"
-                          />
-                        </button>
-                        <button
-                          onClick={() => openService(resident.id)}
-                          className="bg-gray-400 text-white py-1 px-2 rounded hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 mr-2"
-                          title="Open Service Plan"
-                        >
-                          <img
-                            src="/assets/icons/plan copy.svg"
-                            alt="service icon"
-                            className="w-6 h-6"
-                          />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(resident.id)}
-                          className="bg-red-700 text-white py-1 px-2 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50 mr-2"
-                          title="Delete Resident"
-                        >
-                          <img
-                            src="/assets/icons/delete.svg"
-                            alt="Delete Icon"
-                            className="w-6 h-6"
-                          />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={() => setShowForm(true)}
-            className="button text-white py-2 px-4 rounded  focus:outline-none focus:ring-2 block mx-auto mt-4"
-          >
-            {userResidents.length > 0
-              ? 'Add Another Resident'
-              : 'Add a Resident'}
-          </button>
-        </div>
-      </div>
-    )
-  ) : (
+  return ( receivedData ? 
     <div className="h-screen overflow-y-auto">
       <h2 className="text-2xl font-bold mb-4 text-center mt-10">
-        Enter Resident Details
+        Edit Resident Details
       </h2>
 
       <div className="flex items-center justify-center">
@@ -1046,7 +939,7 @@ const Form = () => {
               </button>
               <button
                 type="button"
-                onClick={() => setShowForm(false)}
+                onClick={() => backToProfile(residentId)}
                 className="bg-gray-400 text-white py-2 px-4 rounded hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50"
               >
                 Cancel
@@ -1056,6 +949,11 @@ const Form = () => {
         </div>
       </div>
     </div>
+  :
+
+  <div className="h-screen overflow-y-auto">
+  </div>
+
   );
 };
 

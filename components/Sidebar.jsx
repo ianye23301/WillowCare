@@ -9,7 +9,7 @@ const Sidebar = ({ currentPage }) => {
 
   return (
     <div className="flex">
-      <div className="w-64 overflow-y-auto">
+      <div className="w-64">
         <ul className="p-4 pt-2">
           {/* Map over the menuItems array to generate list items */}
           {menuItems.map((item, index) => (

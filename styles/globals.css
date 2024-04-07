@@ -90,6 +90,18 @@ h3 {
   font-weight: 600; /* Bold */
 }
 
+.label-smaller {
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 600; /* Bold */
+}
+
+.body-text-smaller {
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 400; /* Regular */
+}
+
 
 .body-text {
   font-size: 16px;
@@ -128,7 +140,6 @@ h3 {
   line-height: 20px;
   font-weight: 400;
   background-color: #F3F5F8;
-
 }
 
 .background{
@@ -169,12 +180,23 @@ button:hover {
   color: #F3F5F8
 }
 
+.gray-12-bg {
+  background-color: #F3F5F8
+}
+
+.small-bold {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+
+}
+
 .gray-6 {
   color: #DDDDDD
 }
 
 .gray-6-bg {
-  background-color: #DDDDDD
+  background-color: #DDDDDD!important;
 }
 
 .gray-3 {
@@ -182,17 +204,27 @@ button:hover {
 }
 
 .gray-2 {
-  color: #5F6165
+  color: #5F6165;  
+}
+
+.gray-2-bold {
+  color: #5F6165;  
+  font-weight: 600;
 }
 
 .borders {
   border-width: 1px;
-  border-color: #DDDDDD
+  border-color: #DDDDDD;
+  border-collapse: separate; 
 }
 
 .login {
   background-color: #F3F5F8 !important
 
+}
+
+.priority {
+  background-color: #F44336;
 }
 
 .shadow-custom {
@@ -210,4 +242,48 @@ button:hover {
 
 .outline_btn {
   @apply rounded-full border border-black bg-transparent py-1 px-5 text-black transition-all hover:bg-black hover:text-white text-center text-sm flex items-center justify-center;
+}
+
+
+
+.dropdown-toggle {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  padding: 5px;
+}
+
+.dropdown-item {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.icon-container {
+  float: right;
+  margin-left: 5px; /* Adjust margin as needed */
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+.icon-container {
+  align-self: flex-start;
 }

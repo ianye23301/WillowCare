@@ -203,7 +203,7 @@ const WillowAi = ({ category, onSave }) => {
                     id="inputPlansText"
                     value={inputPlansText}
                     onChange={(e) => setInputPlansText(e.target.value)}
-                    placeholder="Share an objective or plan for need. E.G. encourage social interactions, customize appealing, nutritious meals, implement relaxing bedtime routines"
+                    placeholder="Share an objective or plan for need. E.G. encourage social interactions, nutritious meals, implement relaxing bedtime routines"
                     className="w-full mt-1 p-3 h-24 border input-text border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 resize-none"
                 />
             </div>
@@ -247,7 +247,7 @@ const WillowAi = ({ category, onSave }) => {
                     id="inputMethodText"
                     value={inputMethodText}
                     onChange={(e) => setInputMethodText(e.target.value)}
-                    placeholder="Share an objective or plan for need. E.G. monitor engagement in social activities, track nutritional and meal enjoyment, assess sleep quality and duration"
+                    placeholder="Share an objective or plan for need. E.G. monitor engagement in social activities, track meal enjoyment, assess sleep quality"
                     className="w-full mt-1 p-3 h-24 border input-text border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 resize-none"
                 />
             </div>

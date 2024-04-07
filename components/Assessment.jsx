@@ -23,7 +23,6 @@ const NoteOverlay = ({onClose, onSubmit}) => {
 
       return (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
-          
           <div className="bg-white w-96 rounded-lg shadow-lg p-6">
             <h2 className="text-xl font-bold mb-4">New Note</h2>
             <form onSubmit={handleSubmit}>
@@ -150,7 +149,7 @@ const FormOverlay = ({ onClose, onSubmit }) => {
   };
 
 const Assessment = ({params}) => {
-    const {residentId} = params
+    const residentId = params
     const [userInfo,setUserInfo] = useState(null)
     const [tasks, setTasks] = useState([])
     const [showForm, setShowForm] = useState(false);
@@ -321,131 +320,125 @@ const sortTasksByPriority = async(tasks, setTasks) => {
 
     
   return (
-    <div className='flex flex-col'>
-          {userInfo ? 
-              <div className="input-text p-5 mx-4">
-              <a href="/residents" className="hover:underline">Residents</a> {` > ${userInfo.basic_info.name}`}
-              </div>
-              
-            :
-            <div className="input-text p-5 mx-4">
-              </div>
-            }
-        <div className='flex flex-row'>
-      <div className='flex flex-col w-2/3 h-screen overflow-y-auto pl-5 pb-5'>
+    <div className='flex w-full h-full'>
         
-              <div className="bg-white w-full py-4 flex flex-col rounded-md borders shadow-custom">
-                  {userInfo ? (
-                  <div>
-                  <h1 className='p-4'>
-                  Daily Care Plan for {userInfo.basic_info.name}, {formattedDate}:
-                  </h1>
-                  <div className='label py-4 px-4'>
-                  Task List:
-                  </div>
-
-                  <ul>
-                  {tasks.map((task, index) => (
-                      <li key={index} className="flex items-center justify-between p-4 border-b">
-                      <label className="flex items-center space-x-2">
-                          <input
-                          type="checkbox"
-                          checked={task.completed}
-                          onChange={() => toggleTaskCompletion(task)}
-                          className="form-checkbox"
-                          />
-                          <span className={task.priority ? 'label' : 'body-text'}>{task.task}</span>
-                      </label>
-
-                      <div className="flex items-end space-x-2"> {/* Added wrapper div */}
-                          {task.priority && <span className="priority rounded-md px-2 py-1">              
-                          <img src="/assets/icons/priority.svg" alt="assessment icon" className="w-6 h-6" title = "Priority"/>
-                          </span>}
-                          <button className="bg-white hover:bg-gray-200 rounded inline-block p-1"  onClick={() => handleTaskDelete(task.id)}>
-                          <img src="/assets/icons/close.svg" alt="assessment icon" className="w-6 h-6" title = "Priority" onClick={()=>{handleLogDelete(log.id)}}/>
-                          </button>
-                      </div>
-
-                      </li>
-                  ))}
-                  </ul>
-                  <div className='p-4'>
-
-                  <button className='text-white py-2 px-4 rounded inline-block' onClick={addTask}>
-                      Add Task
-                  </button>
-
-                  </div>
-
-                  {showForm && (
-                      <FormOverlay onClose={closeForm} onSubmit={handleSubmit} />
-                  )}
-                  </div>
-
-                  ) : (
-
-                  <div className='label p-2'>
-                      Loading...
-                  </div>
-                      )
-                  }          
-              </div>
-
-              <div className="bg-white w-full py-4 flex flex-col rounded-md borders shadow-custom mt-5">
-              <h1 className='p-4'>
-                  Needs and considerations:
-              </h1>            
-              
-              {userInfo ? (
+    <div className='flex flex-col w-2/3 pl-5 py-5'>
+            <div className="bg-white w-full py-4 flex flex-col rounded-md borders shadow-custom">
+                {userInfo ? (
                 <div>
+                <h1 className='p-4'>
+                 Daily Care Plan for {userInfo.basic_info.name}, {formattedDate}:
+                </h1>
+                <div className='label py-4 px-4'>
+                 Task List:
+                </div>
 
-                  <div className='pb-2'>
-                  { userInfo.stay.dementia && 
-                  <label className='label px-4 pt-4 pb-2'> This resident has dementia. </label>
-                  }
-                  </div>    
-                
-                  <label className='label px-4 pt-4 pb-2'> Diagnoses: </label>
-                  <div className='px-4 pb-4'>
-                    {cleanString(userInfo.stay.diagnoses)}
-                  </div>
+                <ul>
+                {tasks.map((task, index) => (
+                    <li key={index} className="flex items-center justify-between p-4 border-b">
+                    <label className="flex items-center space-x-2">
+                        <input
+                        type="checkbox"
+                        checked={task.completed}
+                        onChange={() => toggleTaskCompletion(task)}
+                        className="form-checkbox"
+                        />
+                        <span className={task.priority ? 'label' : 'body-text'}>{task.task}</span>
+                    </label>
 
-                  <label className='label px-4 pt-4 pb-2'> Allergies: </label>
-                  <div className='px-4 pb-4'>
-                    {cleanString(userInfo.stay.allergies)}
-                  </div>
+                    <div className="flex items-end space-x-2"> {/* Added wrapper div */}
+                        {task.priority && <span className="priority rounded-md px-2 py-1">              
+                        <img src="/assets/icons/priority.svg" alt="assessment icon" className="w-6 h-6" title = "Priority"/>
+                        </span>}
+                        <button className="bg-white hover:bg-gray-200 rounded inline-block p-1"  onClick={() => handleTaskDelete(task.id)}>
+                        <img src="/assets/icons/close.svg" alt="assessment icon" className="w-6 h-6" title = "Priority" onClick={()=>{handleLogDelete(log.id)}}/>
+                        </button>
+                    </div>
+
+                    </li>
+                ))}
+                </ul>
+                <div className='p-4'>
+
+                <button className='text-white py-2 px-4 rounded inline-block' onClick={addTask}>
+                    Add Task
+                </button>
+
+                </div>
+
+                {showForm && (
+                    <FormOverlay onClose={closeForm} onSubmit={handleSubmit} />
+                )}
+                </div>
+
+                ) : (
+
+                <div className='label p-2'>
+                    Loading...
+                </div>
+                    )
+                }          
+            </div>
+
+            <div className="bg-white w-full py-4 flex flex-col rounded-md borders shadow-custom mt-5">
+            <h1 className='p-4'>
+                 Needs and considerations:
+            </h1>            
+            
+            {userInfo ? (
+              <div>
+
+                <div className='pb-2'>
+                { userInfo.stay.dementia && 
+                <label className='label px-4 pt-4 pb-2'> This resident has dementia. </label>
+                }
+                </div>    
+              
+                <label className='label px-4 pt-4 pb-2'> Diagnoses: </label>
+                <div className='px-4 pb-4'>
+                  {cleanString(userInfo.stay.diagnoses)}
+                </div>
+
+                <label className='label px-4 pt-4 pb-2'> Allergies: </label>
+                <div className='px-4 pb-4'>
+                  {cleanString(userInfo.stay.allergies)}
+                </div>
 
 
-                  <label className='label px-4 pt-4 pb-2'> Flags: </label>
-                  <div className='px-4 pb-4'>
-                    {cleanString(userInfo.stay.flags)}
-                  </div>
+                <label className='label px-4 pt-4 pb-2'> Flags: </label>
+                <div className='px-4 pb-4'>
+                  {cleanString(userInfo.stay.flags)}
+                </div>
 
 
-                  <label className='label px-4 pt-4 pb-2'> Notes: </label>
-                  <div className='px-4 pb-4'>
-                    {(userInfo.stay.notes)}
-                  </div>
+                <label className='label px-4 pt-4 pb-2'> Notes: </label>
+                <div className='px-4 pb-4'>
+                  {(userInfo.stay.notes)}
+                </div>
 
-                  <label className='label px-4 pt-4 pb-2'> Care instructions: </label>
-                  <div className='px-4 pb-4'>
-                    
-                  </div>
+                <label className='label px-4 pt-4 pb-2'> Care instructions: </label>
+                <div className='px-4 pb-4'>
+                  
+                </div>
 
-                  </div>
+                </div>
 
 
-                  ) : (
+                ) : (
 
-                  <div className='label p-2'>
-                      Loading...
-                  </div>
-                      )
-                  }   
-              </div>
+                <div className='label p-2'>
+                    Loading...
+                </div>
+                    )
+                }   
+            </div>
 
-          </div>
-          <div className='flex flex-col w-1/3 h-screen overflow-y-auto px-5'>
+        </div>
+
+
+
+
+        <div className='flex flex-col w-1/3 h-screen overflow-y-auto px-5'>
             
         <div className="bg-white w-full flex flex-col rounded-md borders shadow-custom mt-5">
             <h1 className='p-4'>
@@ -492,16 +485,6 @@ const sortTasksByPriority = async(tasks, setTasks) => {
         </button>
             
         </div>
-
-
-          </div>
-
-
-
-
-        
-
-
 
 
         </div>

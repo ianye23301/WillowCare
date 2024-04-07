@@ -16,9 +16,9 @@ const fetchImages = async(users) => {
     try {
         for (const user of users) {
             const { data, error } = await supabase.storage.from('pictures').getPublicUrl(user['id']);
+            console.log(user['id'])
             const url = data.publicUrl
             if (await checkImageExists(url)) {
-                console.log(url)
                 user.image = url
             } else {
                 user.image = '/assets/images/default.jpg'
@@ -40,7 +40,10 @@ export const POST = async(request) => {
     .select('*')
     .eq('user_email',user_email)
 
+
     const data = await fetchImages(rows)
+    
+
     const responseBody = JSON.stringify(data);
 
         // Return response with rows data
