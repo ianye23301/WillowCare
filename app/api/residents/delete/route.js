@@ -7,6 +7,8 @@ export const POST = async(request) => {
     try {
       // Delete all rows from the table
       const { data, error } = await supabase.from('residents').delete().eq("id", residentId)
+      const { task, err } = await supabase.from('resident_tasks').delete().eq("id", residentId)
+
       ;
       if (error) {
         console.error('Error deleting user:', error);

@@ -1,6 +1,4 @@
 import supabase from '/utils/supabase';
-import { v4 as uuidv4 } from 'uuid';
-
 
 function getCurrentAge(currentDateString, birthdayDateString) {
   const currentDate = new Date(currentDateString);
@@ -24,6 +22,10 @@ function getCurrentAge(currentDateString, birthdayDateString) {
 export const POST = async(request, res) => {
 
   const formData = await request.formData();
+
+
+  const id = formData.get('id')
+
 
     
   const name = formData.get('name');
@@ -64,7 +66,6 @@ export const POST = async(request, res) => {
 
   const user_email = formData.get('user_email');
   const responsible = formData.get('responsible');
-  const file = formData.get('file');
   const age = getCurrentAge(admissionDate, birthday)
 
 
@@ -100,10 +101,10 @@ export const POST = async(request, res) => {
     dementia: dementia,
     mobility: mobility,
     admissionDate: admissionDate,
-    fileNumber: fileNumber,
     responsible: responsible,
     marks: marks,
-    notes: notes
+    notes: notes,
+    fileNumber: fileNumber
   }
 
 
@@ -111,9 +112,7 @@ export const POST = async(request, res) => {
   console.log(income)
 
     
-    if (!file) {
-      console.log("No profile picture")
-    }
+    
     // const req = await fetchTasks(user_email)
     // const tasks = JSON.parse(req)
 
@@ -123,39 +122,19 @@ export const POST = async(request, res) => {
     
     try{
 
-      const user_id = uuidv4();
 
+      const { data: rows, error } = await supabase
+        .from('residents')
+        .update({
+            basic_info: basic_info,
+            stay: stay,
+            misc: misc,
+            user_email: user_email
+        })
+        .eq('id', id)
+        
+  const responseBody = JSON.stringify(rows);
 
-      // try {
-        if (file) {
-          try {
-            const { data, error } = await supabase.storage.from('pictures').upload(user_id,file, {
-              contentType: file.mimetype,
-              cacheControl: '3600'
-            });
-
-          } catch (error) {
-            console.error('Error uploading file to Supabase:', error.message);
-            return res.status(500).json({ error: 'Internal server error' });
-          }
-        }
-      // }
-      // catch (error) {
-      //   console.log("error uploading file")
-      // }
-
-      let { data: rows, error } = await supabase
-      .from('residents')
-      .insert({id: user_id, basic_info: basic_info, stay: stay, misc: misc, user_email: user_email})
-      const responseBody = JSON.stringify(rows);
-
-      let { data: task, err } = await supabase
-      .from('resident_tasks')
-      .insert({id: user_id, tasks: [] })
-
-      let { data: logs, er } = await supabase
-      .from('resident_logs')
-      .insert({resident_id: user_id, logs: [] })
 
       return new Response(responseBody, {
         headers: {
