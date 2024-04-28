@@ -60,6 +60,8 @@ const Layout = ({ children }) => {
                                     height={50}
                                     className='rounded-full p-1'
                                     alt='profile'
+                                    layout='fixed' 
+                                    priority
                                 />
                             </Link>
                         </div>
