@@ -1,0 +1,37 @@
+{
+  "name": "willowcare",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.7",
+    "auth": "^1.0.2",
+    "axios": "^1.6.7",
+<<<<<<< HEAD
+    "cropperjs": "^1.6.1",
+    "next": "^14.1.0",
+=======
+    "next": "^14.1.4",
+>>>>>>> e890144cf9912cdaf2c924fcc9dc09de44f53d37
+    "next-auth": "^4.24.6",
+    "openai": "^4.28.0",
+    "path": "^0.12.7",
+    "pdf-lib": "^1.17.1",
+    "pspdfkit": "^2024.3.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-transition-group": "^4.4.5",
+    "stream": "^0.0.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.0.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0"
+  }
+}
