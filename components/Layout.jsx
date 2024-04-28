@@ -6,8 +6,15 @@ import Link from 'next/link';
 import Image from "next/image";
 
 import { useSession, signIn, signOut } from 'next-auth/react';
+import { useEffect } from 'react';
+import { usePathname } from 'next/navigation'
 
 const Layout = ({ children }) => {
+    const path = usePathname();
+    const portal_side = path.includes('invite')
+    useEffect(()=>{console.log(path),[]})
+    useEffect(()=>{console.log(portal_side),[]})
+
     const onEnterKeyPress = () => {
         console.log('handled');
         //implement
@@ -16,7 +23,24 @@ const Layout = ({ children }) => {
     const { data: session, status: sessionStatus } = useSession();
     const loading = sessionStatus === 'loading';
 
-    return (
+    return ( portal_side ? (
+        <div className='flex flex-col'>
+            <div className="border-b flex flex-row">
+                <img 
+                src='/assets/images/logo.png'
+                alt="logo"
+                width={120}
+                height={120}
+                className='mx-7 my-4'
+                />
+            </div>
+           
+            <div>
+                {children}
+            </div>
+
+        </div>
+    ) : (
         <div className="flex">
             <div className="flex flex-col w-1/6">
                 <Logo />
@@ -52,7 +76,7 @@ const Layout = ({ children }) => {
                 </div>
             </div>
         </div>
-    );
+    ));
 };
 
 export default Layout;

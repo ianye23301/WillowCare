@@ -18,8 +18,10 @@
     "openai": "^4.28.0",
     "path": "^0.12.7",
     "pdf-lib": "^1.17.1",
+    "pspdfkit": "^2024.3.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-transition-group": "^4.4.5",
     "stream": "^0.0.2",
     "uuid": "^9.0.1"
   },
