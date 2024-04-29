@@ -14,6 +14,7 @@ import {
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import supabase from "@/utils/supabase";
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 export default function Profile() {
   // You can pass the user name, role, and organization as props or fetch from a user state.
@@ -32,14 +33,14 @@ export default function Profile() {
     setAnchorEl(null);
   };
 
-  const signOut = async () => {
-    console.log("Signing out!")
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error('Error signing out:', error);
-    }
-    handleClose();
-  };
+  // const signOut = async () => {
+  //   console.log("Signing out!")
+  //   const { error } = await supabase.auth.signOut();
+  //   if (error) {
+  //     console.error('Error signing out:', error);
+  //   }
+  //   handleClose();
+  // };
 
   return (
     <Stack direction="row" sx={{ maxHeight: 40, gap: "12px" }}>

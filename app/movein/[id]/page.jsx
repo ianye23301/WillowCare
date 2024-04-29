@@ -18,8 +18,8 @@ import {
   Divider,
   Paper,
 } from "@mui/material";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
+import CustomTabs from "./CustomTabs";
+
 
 const page = ({ params }) => {
   // Temporary tasks
@@ -53,25 +53,14 @@ const page = ({ params }) => {
 
         {/* Top Tab Box (containing all tabs) */}
         <Box sx={{ width: "100%", boxShadow: "none", bgcolor: "white" }}>
-          <Tabs
-            value={"Section Tabs"}
-            onChange={handleChange}
-            indicatorColor="white"
-            aria-label="secondary tabs example"
-            sx={{
-              ".MuiTab-root": {
-                color: "black", // Sets the text color to black
-                fontWeight: "bold", // Makes the text bold
-                textTransform: "none",
-                "& button:focus": { backgroundColor: "secondary" },
-              },
-            }}
-          >
-            <Tab value="one" label="Admission Tasks" />
-          </Tabs>
+          <CustomTabs/>
         </Box>
 
-        <Stack direction="column" sx={{ p: "16px 32px 16px 32px", maxWidth: "100%" }} spacing={1}>
+        <Stack direction="column" sx={{ p: "16px 32px 16px 32px", maxWidth: "100%" }}>
+
+        <Typography sx={{ fontFamily: 'Open Sans', fontSize: 14, color: '#828282', fontWeight: 'regular' }}>Admissions {'>'} Jefferey Liu </Typography>
+
+        <Box sx = {{height: 12}}/>
 
           {/* Contains the User Card (all information) */}
           <UserCard />

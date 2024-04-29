@@ -1,3 +1,5 @@
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+
 const Sidebar = ({ currentPage }) => {
   // Define an array of menu items with their corresponding paths and icons
   const menuItems = [
@@ -5,7 +7,7 @@ const Sidebar = ({ currentPage }) => {
     { path: "/compliance", icon: "/assets/icons/compliance-icon.svg", label: "Compliance" },
     { path: "/residents", icon: "/assets/icons/residents-icon.svg", label: "Residents" },
     { path: "/service", icon: "/assets/icons/plan.svg", label: "Service Plan" },
-    { path: "/movein", icon: "/assets/icons/movein.svg", label: "Admissions" },
+    { path: "/movein", icon: "/assets/icons/fact-check-icon.svg", label: "Admissions" },
 
   ];
 
