@@ -1,9 +1,10 @@
 "use client"
 
-import Logo from '@/components/Logo';
+import Sidebar from '@/components/layout/Sidebar';
 import Searchbar from '@/components/Searchbar';
 import Link from 'next/link';
 import Image from "next/image";
+import Profile from './Profile';
 
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useEffect } from 'react';
@@ -41,12 +42,14 @@ const Layout = ({ children }) => {
     ) : (
         <div className="flex">
             <div className="flex flex-col w-1/6">
-                <Logo />
+                <Sidebar />
             </div>
+
             <div className="flex-1 flex flex-col">
-                <div className='flex  items-center  search sticky top-0'>
+                <div className='flex items-center search sticky top-0 pr-4'>
                     <Searchbar onEnterKeyPress={onEnterKeyPress}/>
-                    {!loading && (session?.user ? (
+                    <Profile/>
+                    {/* {!loading && (session?.user ? (
                         <div className='flex items-center gap-3'>
                             <button type='button' onClick={signOut} className='outline_btn login w-32 h-7'>
                                 Sign Out
@@ -58,6 +61,8 @@ const Layout = ({ children }) => {
                                     height={50}
                                     className='rounded-full p-1'
                                     alt='profile'
+                                    layout='fixed' 
+                                    priority
                                 />
                             </Link>
                         </div>
@@ -67,9 +72,9 @@ const Layout = ({ children }) => {
                                 Sign In
                             </button>
                         </div>
-                    ))}
+                    ))} */}
                 </div>
-                <div className='flex-1 background'>
+                <div className='flex-1 flex flex-col h-full background'>
                     {children} 
                 </div>
             </div>

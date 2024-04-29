@@ -2,20 +2,16 @@ const Sidebar = ({ currentPage }) => {
   // Define an array of menu items with their corresponding paths and icons
   const menuItems = [
     { path: "/", icon: "/assets/icons/dashboard-icon.svg", label: "Home" },
-<<<<<<< HEAD
     { path: "/compliance", icon: "/assets/icons/compliance-icon.svg", label: "Compliance" },
-=======
-    // { path: "/compliance", icon: "/assets/icons/compliance-icon.svg", label: "Compliance" },
->>>>>>> e890144cf9912cdaf2c924fcc9dc09de44f53d37
     { path: "/residents", icon: "/assets/icons/residents-icon.svg", label: "Residents" },
     { path: "/service", icon: "/assets/icons/plan.svg", label: "Service Plan" },
-    { path: "/movein", icon: "/assets/icons/movein.svg", label: "Move-Ins" },
+    { path: "/movein", icon: "/assets/icons/movein.svg", label: "Admissions" },
 
   ];
 
   return (
     <div className="flex">
-      <div className="w-64">
+      <div className="w-64" >
         <ul className="p-4 pt-2">
           {/* Map over the menuItems array to generate list items */}
           {menuItems.map((item, index) => (
