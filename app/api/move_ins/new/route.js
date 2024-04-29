@@ -36,12 +36,30 @@ export const POST = async(request, res) => {
         'LIC9158.pdf',
         'lic9172.pdf'
       ];
+
+      const forms = {
+        'LIC405': false,
+        'LIC601': false,
+        'LIC602A': false,
+        'LIC603': false,
+        'LIC604A': false,
+        'LIC605A': false,
+        'LIC613C' : false,
+        'LIC621': false,
+        'LIC625': false,
+        'LIC627C': false,
+        'LIC9158': false,
+        'LIC9172': false,
+      }
+
+      const currentTimeStamp = Date.now();
+
       
 
     try {
       let { data: rows, error } = await supabase
       .from('move-ins')
-      .insert({id: id, name: name, target_date: date, contact: contact, user_email: user_email})
+      .insert({id: id, name: name, target_date: date, contact: contact, user_email: user_email, last_updated: currentTimeStamp, input_time: currentTimeStamp, forms: forms, editor: "Family"})
       const responseBody = JSON.stringify(rows);
 
       for (const path of pdfFiles) {

@@ -360,3 +360,9 @@ button:hover {
   background-color: #FEF8EE;
   color: #EC9125;
 }
+
+
+.complete {
+  background-color: #E6F8F5;
+  color: #047A6F;
+}

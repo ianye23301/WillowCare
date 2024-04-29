@@ -5,6 +5,22 @@ import { useSession } from "next-auth/react";
 import Overlay from "@/components/Overlay";
 import Link from "next/link";
 import { Skeleton } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  CardActions,
+  Typography,
+  LinearProgress,
+  Button,
+  Grid,
+  AppBar,
+  Toolbar,
+  Stack,
+  Divider,
+  Paper,
+} from "@mui/material";
 
 const page = () => {
   const pdfFiles = [
@@ -69,6 +85,7 @@ const page = () => {
     setDate("");
     setContact({ ...contact, name: "", phone: "", email: "" });
   };
+  
 
   useEffect(() => {
     fetchResidents();
@@ -152,6 +169,32 @@ const page = () => {
     fetchResidents();
   }, [session]);
 
+  const formatLastUpdated = (timestamp) => {
+    const now = Date.now();
+    const diffInSeconds = Math.floor((now - timestamp) / 1000);
+  
+    if (diffInSeconds < 60) {
+      return diffInSeconds + " seconds";
+    } else if (diffInSeconds < 3600) {
+      return Math.floor(diffInSeconds / 60) + " minutes";
+    } else if (diffInSeconds < 86400) {
+      return Math.floor(diffInSeconds / 3600) + " hours";
+    } else if (diffInSeconds < 604800) {
+      return Math.floor(diffInSeconds / 86400) + " days";
+    } else if (diffInSeconds < 2592000) {
+      return Math.floor(diffInSeconds / 604800) + " weeks";
+    } else if (diffInSeconds < 31536000) {
+      return Math.floor(diffInSeconds / 2592000) + " months";
+    } else {
+      return Math.floor(diffInSeconds / 31536000) + " years";
+    }
+  };
+
+  function countTrues(obj) {
+    const trueCount = Object.values(obj).filter(value => value === true).length;
+    return trueCount;
+ }
+
   return (
     <div className="h-screen overflow-y-auto flex flex-col">
       <div className="flex flex-col w-full items-center pb-10 mx-auto px-8">
@@ -186,8 +229,13 @@ const page = () => {
                     {" "}
                     {formatDate(resident.target_date)}{" "}
                   </div>
-                  <div className="w-1/4 p-2 label"> Progress </div>
-                  <div className="w-1/5 p-2 label"> Last Update</div>
+                  <div className="w-1/4 p-2 pr-10 label"> 
+                    <Stack direction="column">
+                      <Typography color="textPrimary" variant = "caption" sx = {{fontSize: '0.7rem'}}>{`Step ${countTrues(resident.forms)} of 12`}</Typography>
+                      <LinearProgress variant="determinate" value={(countTrues(resident.forms)/12)*100} sx={{ height: '10px', borderRadius: '5px', color: 'purple', minWidth: '140px'}} />
+                    </Stack>
+                  </div>
+                  <div className="w-1/5 p-2"> Last Updated <span className="label">{formatLastUpdated(resident.last_updated)}</span> ago by <span className="label">{resident.editor}</span></div>
                   <div className="w-1/6 p-2 flex flex-col">
                     <div className="label">{resident.contact.name}</div>
                     <div className="input-text gray-3">

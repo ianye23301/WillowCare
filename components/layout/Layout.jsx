@@ -48,14 +48,14 @@ const Layout = ({ children }) => {
             <div className="flex-1 flex flex-col">
                 <div className='flex items-center search sticky top-0 pr-4'>
                     <Searchbar onEnterKeyPress={onEnterKeyPress}/>
-                    <Profile/>
+                    {/* <Profile/> */}
 
-                    {/*  This is important code to migrate later. {!loading && (session?.user ? (
+                    {!loading && (session?.user ? (
                         <div className='flex items-center gap-3'>
                             <button type='button' onClick={signOut} className='outline_btn login w-32 h-7'>
                                 Sign Out
                             </button>
-                            <Link href='/profile'>
+                            
                                 <Image
                                     src={session?.user.image}
                                     width={50}
@@ -65,7 +65,6 @@ const Layout = ({ children }) => {
                                     layout='fixed' 
                                     priority
                                 />
-                            </Link>
                         </div>
                     ) : (
                         <div className='flex gap-3'>
@@ -73,7 +72,7 @@ const Layout = ({ children }) => {
                                 Sign In
                             </button>
                         </div>
-                    ))} */}
+                    ))}
                 </div>
                 <div className='flex-1 flex flex-col h-full background'>
                     {children} 

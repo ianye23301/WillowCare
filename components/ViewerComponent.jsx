@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useRef, useState } from "react";
 
-export default function ViewerComponent({id, document, onClose, name}) {
+export default function ViewerComponent({id, document, onClose, name, editor}) {
 
 
   const getFiles = async() => {
@@ -50,7 +50,7 @@ export default function ViewerComponent({id, document, onClose, name}) {
     return () => PSPDFKit && PSPDFKit.unload(container);
   }, []);
 
-  const handleSubmit = async() => {
+  const handleSubmit = async(complete) => {
     try {
       console.log("hello")
       // Export the PDF document as an ArrayBuffer
@@ -64,6 +64,9 @@ export default function ViewerComponent({id, document, onClose, name}) {
       formData.append('file', blob);
       formData.append('id', id)
       formData.append('path', document)
+      formData.append('complete', complete)
+      formData.append('editor', editor)
+      formData.append('formName', name)
 
       // Upload the file to the server
       await fetch('/api/move_ins/forms/upload', {
@@ -78,15 +81,20 @@ export default function ViewerComponent({id, document, onClose, name}) {
   }
 
   return <div className="flex flex-col justify-center">
-    <div className="flex flex-row items-center">
-      <button onClick={onClose} className="p-2 m-5 flex flex-row">
-        <img src="/assets/icons/undo.svg" className="w-6 h-6 pr-2"/>
-        Back
-      </button>
-      <div className="label">Editing {name}</div>
-    </div>
+    <div className="flex flex-row items-center justify-between">
+  <div className="flex flex-row items-center">
+    <button onClick={onClose} className="p-2 m-5 flex flex-row">
+      <img src="/assets/icons/undo.svg" className="w-6 h-6 pr-2"/>
+      Back
+    </button>
+    <div className="label">Editing {name}</div>
+  </div>
+  <div>
+    <button className="p-2 px-4 mr-10" onClick={() => { handleSubmit(false) }}> Save </button>
+    <button className="p-2 mr-4" onClick={() => { handleSubmit(true) }}> Mark as Complete </button>
+  </div>
+</div>
     <div ref={containerRef} style={{ width: "100%", height: "100vh" }} />
-    <button className = "w-3/5 mx-auto" onClick={handleSubmit}> Save </button>
 
   </div>;
 }

@@ -4,6 +4,7 @@ import ViewerComponent from "/components/ViewerComponent";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
+
 function Portal() {
 
     function getLIC(str) {
@@ -46,6 +47,7 @@ function Portal() {
                 })
               });
             const data = await response.json()
+            console.log(data[0])
             setInfo(data[0])
         }
 
@@ -72,7 +74,7 @@ function Portal() {
     pdf ? (
     <div className="App">
       <div className="PDF-viewer">
-        <ViewerComponent document={pdf} onClose = {closePdf} id = {id} name = {getLIC(pdf)}/>
+        <ViewerComponent document={pdf} onClose = {closePdf} id = {id} name = {getLIC(pdf)} editor = "Family"/>
       </div>
     </div>
     ) : (
@@ -86,26 +88,45 @@ function Portal() {
                 Welcome to the Joyful Chapter admission portal! Please sign or address all of the incomplete documents by clicking on the action buttons.
                 </div>
 
-                {forms.map((form,index) => (
-                <div key = {index} className="borders shadow-custom p-4 m-3 flex flex-row">
-                    <div className="w-3/5 flex flex-col">
-                        <div className="label">{form.name} ({form.lic})</div>
-                        {info.date && (
-                        <div className="input-text gray-9">Due by {info.date}</div>
-                        )}
-                    </div>
-                    <div className="w-1/5 p-1 text-center">
-                        <div className="not-started p-2 px-1 rounded-lg ">Incomplete</div>
-                    </div>
-                    <div className="p-1 w-1/5 flex justify-center">
-                        <div className="label flex flex-row p-2 rounded-lg borders shadow-custom cursor-pointer" onClick={()=>(handleViewPdf(form.path))}>
-                            <img src="/assets/icons/view.svg" className="w-6 h-6"/>
-                            <div className="ml-2">View</div>
+                {forms.sort((a, b) => {
+                    // If info.forms[a.lic] is true and info.forms[b.lic] is false, return 1
+                    if (info.forms[a.lic] && !info.forms[b.lic]) {
+                        return 1;
+                    }
+                    // If info.forms[a.lic] is false and info.forms[b.lic] is true, return -1
+                    else if (!info.forms[a.lic] && info.forms[b.lic]) {
+                        return -1;
+                    }
+                    // Otherwise, maintain the current order
+                    else {
+                        return 0;
+                    }
+                }).map((form, index) => (
+                    <div key={index} className="borders shadow-custom p-4 m-3 flex flex-row">
+                        <div className="w-3/5 flex flex-col">
+                            <div className="label">{form.name} ({form.lic})</div>
+                            {info.date && (
+                                <div className="input-text gray-9">Due by {info.date}</div>
+                            )}
                         </div>
-                    </div>
+                        <div className="w-1/5 p-1 text-center">
+                            {info.forms[form.lic] ? (
+                                <div className="complete p-2 px-1 rounded-lg ">Complete</div>
+                            ) : (
+                                <div className="not-started p-2 px-1 rounded-lg ">Incomplete</div>
+                            )}
 
-                </div>
-            ))}
+                        </div>
+                        <div className="p-1 w-1/5 flex justify-center">
+                            <div className="label flex flex-row p-2 rounded-lg borders shadow-custom cursor-pointer" onClick={() => (handleViewPdf(form.path))}>
+                                <img src="/assets/icons/view.svg" className="w-6 h-6" />
+                                <div className="ml-2">View</div>
+                            </div>
+                        </div>
+
+                    </div>
+                ))}
+
             </div>
         </div>
     )

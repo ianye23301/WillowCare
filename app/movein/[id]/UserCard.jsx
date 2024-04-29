@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import {
   Avatar,
@@ -11,12 +12,59 @@ import {
   Stack,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { useState } from "react";
 
 export default function UserCard(props) {
   // Calculate the progress percentage
-  const totalSteps = 16;
-  const currentStep = 4;
+  function countTrues(obj) {
+    const trueCount = Object.values(obj).filter(value => value === true).length;
+    return trueCount;
+ }
+  const totalSteps = 12;
+  const currentStep = countTrues(props.forms);
   const progress = (currentStep / totalSteps) * 100;
+
+  
+
+
+  function formatDate(inputDate) {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const date = new Date(inputDate);
+    return date.toLocaleDateString("en-US", options);
+  }
+
+  const formatLastUpdated = (timestamp) => {
+    const now = Date.now();
+    const diffInSeconds = Math.floor((now - timestamp) / 1000);
+  
+    if (diffInSeconds < 60) {
+      return `Last updated ${diffInSeconds} seconds ago by Family`;
+    } else if (diffInSeconds < 3600) {
+      return `Last updated ${Math.floor(diffInSeconds / 60)} minutes ago by`;
+    } else if (diffInSeconds < 86400) {
+      return `Last updated ${Math.floor(diffInSeconds / 3600)} hours ago by`;
+    } else if (diffInSeconds < 604800) {
+      return `Last updated ${Math.floor(diffInSeconds / 86400)} days ago by`;
+    } else if (diffInSeconds < 2592000) {
+      return `Last updated ${Math.floor(diffInSeconds / 604800)} weeks ago by`;
+    } else if (diffInSeconds < 31536000) {
+      return `Last updated ${Math.floor(diffInSeconds / 2592000)} months ago by`;
+    } else {
+      return `Last updated ${Math.floor(diffInSeconds / 31536000)} years ago by`;
+    }
+  };
+  const [copied, setCopied] = useState(false);
+  const linkToCopy = `${window.location.origin}/invite/${props.id}`; // Replace 'your-relative-path' with the path you want to copy
+  const handleCopy = async () => {
+    try {
+      console.log(linkToCopy)
+      await navigator.clipboard.writeText(linkToCopy);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 5000); 
+    } catch (error) {
+      console.error('Failed to copy:', error);
+    }
+  };
 
   return (
     <Card
@@ -35,7 +83,7 @@ export default function UserCard(props) {
         <Stack direction="column" sx={{ pt: 2, pb: 1, pr: 2, width: "100%" }}>
           {/* Top horizontal stack */}
           <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h6">Jefferey Liu</Typography>
+            <Typography variant="h6">{props.name}</Typography>
             <Button
               size="small"
               startIcon={<EditIcon />}
@@ -47,8 +95,9 @@ export default function UserCard(props) {
                 borderRadius: "16px",
                 padding: "10px",
               }}
+              onClick={handleCopy}
             >
-              <Typography variant="caption">Edit</Typography>
+              <Typography variant="caption">Copy Link</Typography>
             </Button>
           </Stack>
 
@@ -64,11 +113,11 @@ export default function UserCard(props) {
                 variant="body1"
                 sx={{ fontWeight: "bold" }}
               >
-                Bob Liu
+                {props.contact.name}
               </Typography>
 
               <Typography color="textSecondary" variant="caption">
-                353-535-353 - bob@email.com
+                {props.contact.phone} - {props.contact.email}
               </Typography>
             </Stack>
 
@@ -77,7 +126,7 @@ export default function UserCard(props) {
                 Target Move-In Date
               </Typography>
               <Typography color="textPrimary" variant="body2">
-                May 31, 2023
+                {props.date && formatDate(props.date)}
               </Typography>
             </Stack>
 
@@ -97,7 +146,7 @@ export default function UserCard(props) {
                 Last Update
               </Typography>
               <Typography variant="caption" color="textPrimary">
-                6 hours ago by Family
+                {formatLastUpdated(props.update)} {props.editor}
               </Typography>
 
             </Stack>
@@ -106,6 +155,9 @@ export default function UserCard(props) {
           </Stack>
         </Stack>
       </Stack>
+      {copied && 
+                        <div className='copied-notification fade-out'>Copied!</div>
+                    }
       {/* <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
         <Avatar sx={{ width: 56, height: 56 }} />
         <Box sx={{ ml: 2, flex: '1 1 auto' }}>
