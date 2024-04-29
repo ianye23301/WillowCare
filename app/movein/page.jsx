@@ -61,6 +61,31 @@ const page = () => {
     return date.toLocaleDateString("en-US", options);
   }
 
+  const formatLastUpdated = (timestamp) => {
+    const now = Date.now();
+    const diffInSeconds = Math.floor((now - timestamp) / 1000);
+  
+    if (diffInSeconds < 60) {
+      return diffInSeconds + " seconds";
+    } else if (diffInSeconds < 3600) {
+      return Math.floor(diffInSeconds / 60) + " minutes";
+    } else if (diffInSeconds < 86400) {
+      return Math.floor(diffInSeconds / 3600) + " hours";
+    } else if (diffInSeconds < 604800) {
+      return Math.floor(diffInSeconds / 86400) + " days";
+    } else if (diffInSeconds < 2592000) {
+      return Math.floor(diffInSeconds / 604800) + " weeks";
+    } else if (diffInSeconds < 31536000) {
+      return Math.floor(diffInSeconds / 2592000) + " months";
+    } else {
+      return Math.floor(diffInSeconds / 31536000) + " years";
+    }
+  };
+  
+
+
+
+
   const handleAddProspect = () => {
     const new_id = uuidv4();
     setId(new_id);
@@ -124,7 +149,7 @@ const page = () => {
                 method: 'POST',
                 body: formData
               });
-              fetchResidents()
+            fetchResidents()
         }
         catch (error) {
              console.error(error)
@@ -165,7 +190,7 @@ const page = () => {
           ) : (
 
             residents && residents.map((resident, index) => (
-                <Link key={index} href={`/movein/${resident.id}`} passHref>
+                <Link key={index} href={`/movein/${resident.id}`} id="id" passHref>
                   <div key={index} className="mx-4 my-4 flex flex-row h-20">
                     <div className="w-1/6 p-2 label"> {resident.name} </div>
                     <div className="w-1/5 p-2 label">
@@ -173,7 +198,7 @@ const page = () => {
                       {formatDate(resident.target_date)}{" "}
                     </div>
                     <div className="w-1/4 p-2 label"> Progress </div>
-                    <div className="w-1/5 p-2 label"> Last Update</div>
+                    <div className="w-1/5 p-2"> Last Updated <span className="label">{formatLastUpdated(resident.last_updated)} ago</span> by <span className="label">Family</span> </div>
                     <div className="w-1/6 p-2 flex flex-col">
                       <div className="label">{resident.contact.name}</div>
                       <div className="input-text gray-3">

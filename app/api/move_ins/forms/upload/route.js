@@ -6,8 +6,6 @@ export const POST = async(request, res) => {
     const file = formData.get('file');
     const id = formData.get('id');
     const path = formData.get('path')
-    console.log(`${id}/${path}`)
-    console.log(file)
     
     try {
         const { data, error } = await supabase.storage.from('forms').update(`${id}/${path}`,file, {
@@ -15,6 +13,16 @@ export const POST = async(request, res) => {
           upsert: true
         });
 
+        const currentTimestamp = Date.now();
+        console.log(currentTimestamp)
+        const { update, er } = await supabase
+            .from('move-ins')
+            .update({ 'last_updated' :currentTimestamp })
+            .eq('id', id);
+      
+          if (error) throw error;
+
+        
         const responseBody = JSON.stringify(data);
         return new Response(responseBody, {
           headers: {

@@ -36,12 +36,13 @@ export const POST = async(request, res) => {
         'LIC9158.pdf',
         'lic9172.pdf'
       ];
-      
+    const currentTimestamp = Date.now();
+
 
     try {
       let { data: rows, error } = await supabase
       .from('move-ins')
-      .insert({id: id, name: name, target_date: date, contact: contact, user_email: user_email})
+      .insert({id: id, name: name, target_date: date, contact: contact, user_email: user_email,last_updated: currentTimestamp, input_time: currentTimestamp})
       const responseBody = JSON.stringify(rows);
 
       for (const path of pdfFiles) {

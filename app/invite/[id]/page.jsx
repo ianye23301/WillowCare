@@ -9,7 +9,7 @@ function Portal() {
     function getLIC(str) {
         const index = str.indexOf('.');
         if (index !== -1) {
-          return str.substring(0, index);
+          return str.substring(0, index).toUpperCase();
         }
         return str;
       }

@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import {
   Avatar,
@@ -11,8 +12,33 @@ import {
   Stack,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { useState, useEffect } from "react";
 
 export default function UserCard(props) {
+
+  console.log(props)
+
+  const formatLastUpdated = (timestamp) => {
+    const now = Date.now();
+    const diffInSeconds = Math.floor((now - timestamp) / 1000);
+  
+    if (diffInSeconds < 60) {
+      return diffInSeconds + " seconds ago by Family";
+    } else if (diffInSeconds < 3600) {
+      return Math.floor(diffInSeconds / 60) + " minutes ago by Family";
+    } else if (diffInSeconds < 86400) {
+      return Math.floor(diffInSeconds / 3600) + " hours ago by Family";
+    } else if (diffInSeconds < 604800) {
+      return Math.floor(diffInSeconds / 86400) + " days ago by Family";
+    } else if (diffInSeconds < 2592000) {
+      return Math.floor(diffInSeconds / 604800) + " weeks ago by Family";
+    } else if (diffInSeconds < 31536000) {
+      return Math.floor(diffInSeconds / 2592000) + " months ago by Family";
+    } else {
+      return Math.floor(diffInSeconds / 31536000) + " years ago by Family";
+    }
+  };
+
   // Calculate the progress percentage
   const totalSteps = 16;
   const currentStep = 4;
@@ -35,7 +61,7 @@ export default function UserCard(props) {
         <Stack direction="column" sx={{ pt: 2, pb: 1, pr: 2, width: "100%" }}>
           {/* Top horizontal stack */}
           <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h6">Jefferey Liu</Typography>
+            <Typography variant="h6">{props.name}</Typography>
             <Button
               size="small"
               startIcon={<EditIcon />}
@@ -64,11 +90,11 @@ export default function UserCard(props) {
                 variant="body1"
                 sx={{ fontWeight: "bold" }}
               >
-                Bob Liu
+                {props.contact.name}
               </Typography>
 
               <Typography color="textSecondary" variant="caption">
-                353-535-353 - bob@email.com
+                {props.contact.phone} - {props.contact.email}
               </Typography>
             </Stack>
 
@@ -77,7 +103,7 @@ export default function UserCard(props) {
                 Target Move-In Date
               </Typography>
               <Typography color="textPrimary" variant="body2">
-                May 31, 2023
+                {props.date}
               </Typography>
             </Stack>
 
@@ -97,7 +123,7 @@ export default function UserCard(props) {
                 Last Update
               </Typography>
               <Typography variant="caption" color="textPrimary">
-                6 hours ago by Family
+                {formatLastUpdated(props.update)}
               </Typography>
 
             </Stack>
