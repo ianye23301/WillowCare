@@ -51,24 +51,9 @@ const page = ({ params }) => {
     { name: "Functional Capability Assessment", path: "lic9172.pdf", lic: "LIC9172" }
   ];
 
+
   const { id } = params;
-
   const [info, setInfo] = useState(null)
-  const [pdf, setpdf] = useState(null)
-
-  useEffect(()=> {
-    console.log(id)
-    fetchResident()
-  },[])
-
-  const handleViewPdf = (path) => {
-      setpdf(path)
-  }
-
-  const closePdf = () => {
-      setpdf(null)
-  }
-
   const fetchResident = async() => {
       try {
           const response = await fetch('/api/move_ins/fetch_single', {
@@ -84,6 +69,21 @@ const page = ({ params }) => {
       catch (error) {
           console.error(error)
       }
+  }
+
+  useEffect(()=> {
+    console.log(id)
+    fetchResident()
+},[])
+
+  const [pdf, setpdf] = useState(null)
+
+  const handleViewPdf = (path) => {
+      setpdf(path)
+  }
+
+  const closePdf = () => {
+      setpdf(null)
   }
 
   const handleChange = () => {

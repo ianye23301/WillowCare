@@ -15,6 +15,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
 
 export default function UserCard(props) {
+
+  console.log(props)
+
   // Calculate the progress percentage
   function countTrues(obj) {
     const trueCount = Object.values(obj).filter(value => value === true).length;
