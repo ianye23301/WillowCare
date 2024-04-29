@@ -48,14 +48,14 @@ const page = ({ params }) => {
   };
   return (
     <div className="h-screen overflow-y-auto flex flex-col">
-      {/* Header */}
 
       <Stack spacing={2}>
+
+        {/* Top Tab Box (containing all tabs) */}
         <Box sx={{ width: "100%", boxShadow: "none", bgcolor: "white" }}>
           <Tabs
-            value={"Hello"}
+            value={"Section Tabs"}
             onChange={handleChange}
-            textColor=""
             indicatorColor="white"
             aria-label="secondary tabs example"
             sx={{
@@ -71,12 +71,10 @@ const page = ({ params }) => {
           </Tabs>
         </Box>
 
-        <Stack
-          direction="column"
-          sx={{ p: "16px 32px 16px 32px", maxWidth: "100%" }}
-          spacing={1}
-        >
-          <UserCard sx />
+        <Stack direction="column" sx={{ p: "16px 32px 16px 32px", maxWidth: "100%" }} spacing={1}>
+
+          {/* Contains the User Card (all information) */}
+          <UserCard />
 
           {/* This is spacing */}
           <Box sx={{ height: 16 }} />
