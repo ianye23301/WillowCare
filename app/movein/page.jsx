@@ -4,52 +4,47 @@ import { v4 as uuidv4 } from "uuid";
 import { useSession } from "next-auth/react";
 import Overlay from "@/components/Overlay";
 import Link from "next/link";
-import {Skeleton} from '@mui/material'
-
-
-
+import { Skeleton } from "@mui/material";
 
 const page = () => {
+  const pdfFiles = [
+    "LIC405.pdf",
+    "lic601.pdf",
+    "lic602a.pdf",
+    "LIC603.pdf",
+    "LIC603A.pdf",
+    "LIC604A.pdf",
+    "LIC605A.pdf",
+    "LIC613C.pdf",
+    "LIC621.pdf",
+    "LIC625.pdf",
+    "LIC627C.pdf",
+    "LIC9158.pdf",
+    "lic9172.pdf",
+  ];
 
-    const pdfFiles = [
-        'LIC405.pdf',
-        'lic601.pdf',
-        'lic602a.pdf',
-        'LIC603.pdf',
-        'LIC603A.pdf',
-        'LIC604A.pdf',
-        'LIC605A.pdf',
-        'LIC613C.pdf',
-        'LIC621.pdf',
-        'LIC625.pdf',
-        'LIC627C.pdf',
-        'LIC9158.pdf',
-        'lic9172.pdf',
-      ];
-      
+  async function fetchPdfBlob(filename) {
+    try {
+      const response = await fetch(`/move-in/${filename}`);
+      const blob = await response.blob();
+      return blob;
+    } catch (error) {
+      console.error(`Error fetching ${filename}:`, error);
+      throw error;
+    }
+  }
 
-    async function fetchPdfBlob(filename) {
-        try {
-          const response = await fetch(`/move-in/${filename}`);
-          const blob = await response.blob();
-          return blob;
-        } catch (error) {
-          console.error(`Error fetching ${filename}:`, error);
-          throw error;
-        }
-      }      
-
-    const [showOverlay, setShowOverlay] = useState(false)
-    const [showPortal, setShowPortal] = useState(false)
-    const [id, setId] = useState('')
-    const [name,setName] = useState('')
-    const [date,setDate] = useState('')
-    const [contact,setContact] = useState({
-        name: '',
-        phone: '',
-        email: '',
-    })
-    const { data: session, status } = useSession();
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [showPortal, setShowPortal] = useState(false);
+  const [id, setId] = useState("");
+  const [name, setName] = useState("");
+  const [date, setDate] = useState("");
+  const [contact, setContact] = useState({
+    name: "",
+    phone: "",
+    email: "",
+  });
+  const { data: session, status } = useSession();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -77,68 +72,89 @@ const page = () => {
 
   useEffect(() => {
     fetchResidents();
-    console.log("Fetching...")
+    console.log("Fetching...");
   }, [session]);
 
-    const fetchResidents = async() => {
-        console.log(session?.user.email)
-        try {
-            const response = await fetch('/api/move_ins/fetch', {
-                method: 'POST',
-                body: JSON.stringify({
-                    user_email: session?.user.email
-                })
-              });
-            const data = await response.json()
-            setResidents(data)
-            console.log(residents)
-        }
-        catch (error) {
-             console.error(error)
-        }
-
+  const fetchResidents = async () => {
+    setIsLoading(true);
+    console.log(session?.user.email);
+    try {
+      const response = await fetch("/api/move_ins/fetch", {
+        method: "POST",
+        body: JSON.stringify({
+          user_email: session?.user.email,
+        }),
+      });
+      const data = await response.json();
+      setResidents(data);
+      console.log(residents);
+    } catch (error) {
+      console.error(error);
+    } finally { 
+      setIsLoading(false)
     }
+  };
 
-    const handleProspectSubmit = async({id, name, date, contact}) => {
+  const ResidentSkeleton = () => {
+    return (
+      <div className="mx-4 my-4 flex flex-row h-20">
+        <div className="w-1/6 p-2">
+          <Skeleton variant="text" width="100%" height={24} />
+        </div>
+        <div className="w-1/5 p-2">
+          <Skeleton variant="text" width="100%" height={24} />
+        </div>
+        <div className="w-1/4 p-2">
+          <Skeleton variant="text" width="100%" height={24} />
+        </div>
+        <div className="w-1/5 p-2">
+          <Skeleton variant="text" width="100%" height={24} />
+        </div>
+        <div className="w-1/6 p-2 flex flex-col">
+          <Skeleton variant="text" width="100%" height={24} />
+          <Skeleton variant="text" width="100%" height={24} />
+        </div>
+      </div>
+    );
+  };
+
+  const handleProspectSubmit = async ({ id, name, date, contact }) => {
+    try {
+      const formData = new FormData();
+
+      for (const filename of pdfFiles) {
         try {
-
-            const formData = new FormData()
-
-            for (const filename of pdfFiles) {
-                try {
-                  const blob = await fetchPdfBlob(filename);
-                  formData.append(`${filename}`, blob); // Append each Blob to FormData
-                } catch (error) {
-                  // Handle error
-                }
-              }
-              formData.append('id',id)
-              formData.append('name',name)
-              formData.append('date', date)
-              formData.append('contact_name', contact.name)
-              formData.append('contact_phone', contact.phone)
-              formData.append('contact_email', contact.email)
-              formData.append('user_email', session?.user.email)
-            
-            const response = await fetch('/api/move_ins/new', {
-                method: 'POST',
-                body: formData
-              });
-              fetchResidents()
+          const blob = await fetchPdfBlob(filename);
+          formData.append(`${filename}`, blob); // Append each Blob to FormData
+        } catch (error) {
+          // Handle error
         }
-        catch (error) {
-             console.error(error)
-        }
+      }
+      formData.append("id", id);
+      formData.append("name", name);
+      formData.append("date", date);
+      formData.append("contact_name", contact.name);
+      formData.append("contact_phone", contact.phone);
+      formData.append("contact_email", contact.email);
+      formData.append("user_email", session?.user.email);
+
+      const response = await fetch("/api/move_ins/new", {
+        method: "POST",
+        body: formData,
+      });
+      fetchResidents();
+    } catch (error) {
+      console.error(error);
     }
-    
-    useEffect(()=> {
-        fetchResidents()
-    },[session])
+  };
+
+  useEffect(() => {
+    fetchResidents();
+  }, [session]);
 
   return (
-    <div className='h-screen overflow-y-auto flex flex-col'>
-        <div className='flex flex-col w-full items-center pb-10 mx-auto px-8'>
-
+    <div className="h-screen overflow-y-auto flex flex-col">
+      <div className="flex flex-col w-full items-center pb-10 mx-auto px-8">
         {/* Add prospect button */}
         <div className="flex justify-end w-full py-10">
           <button className="button p-2 px-4 " onClick={handleAddProspect}>
@@ -159,30 +175,28 @@ const page = () => {
             <div className="w-1/6 label p-2"> Contact</div>
           </div>
           {isLoading ? (
-
-            <ResidentSkeleton/>
-
+            <ResidentSkeleton />
           ) : (
-
-            residents && residents.map((resident, index) => (
-                <Link key={index} href={`/movein/${resident.id}`} passHref>
-                  <div key={index} className="mx-4 my-4 flex flex-row h-20">
-                    <div className="w-1/6 p-2 label"> {resident.name} </div>
-                    <div className="w-1/5 p-2 label">
-                      {" "}
-                      {formatDate(resident.target_date)}{" "}
-                    </div>
-                    <div className="w-1/4 p-2 label"> Progress </div>
-                    <div className="w-1/5 p-2 label"> Last Update</div>
-                    <div className="w-1/6 p-2 flex flex-col">
-                      <div className="label">{resident.contact.name}</div>
-                      <div className="input-text gray-3">
-                        {resident.contact.phone} - {resident.contact.email}
-                      </div>
+            residents &&
+            residents.map((resident, index) => (
+              <Link key={index} href={`/movein/${resident.id}`} passHref>
+                <div key={index} className="mx-4 my-4 flex flex-row h-20">
+                  <div className="w-1/6 p-2 label"> {resident.name} </div>
+                  <div className="w-1/5 p-2 label">
+                    {" "}
+                    {formatDate(resident.target_date)}{" "}
+                  </div>
+                  <div className="w-1/4 p-2 label"> Progress </div>
+                  <div className="w-1/5 p-2 label"> Last Update</div>
+                  <div className="w-1/6 p-2 flex flex-col">
+                    <div className="label">{resident.contact.name}</div>
+                    <div className="input-text gray-3">
+                      {resident.contact.phone} - {resident.contact.email}
                     </div>
                   </div>
-                </Link>
-              ))
+                </div>
+              </Link>
+            ))
           )}
         </div>
       </div>
