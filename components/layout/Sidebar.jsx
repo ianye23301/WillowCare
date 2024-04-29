@@ -1,7 +1,7 @@
 "use client"
 import Link from 'next/link'
 import Image from 'next/image'
-import Sidebar from '@/components/Sidebar';
+import SidebarButtons from '@/components/layout/SidebarButtons';
 import { usePathname } from 'next/navigation'; 
 
 const Logo = () => {
@@ -21,7 +21,7 @@ const Logo = () => {
           />
         </Link>
       </div>
-      <Sidebar currentPage={currentPage}/>
+      <SidebarButtons currentPage={currentPage}/>
     </div>
   )
 }
