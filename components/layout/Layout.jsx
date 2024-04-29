@@ -49,7 +49,8 @@ const Layout = ({ children }) => {
                 <div className='flex items-center search sticky top-0 pr-4'>
                     <Searchbar onEnterKeyPress={onEnterKeyPress}/>
                     <Profile/>
-                    {/* {!loading && (session?.user ? (
+
+                    {/*  This is important code to migrate later. {!loading && (session?.user ? (
                         <div className='flex items-center gap-3'>
                             <button type='button' onClick={signOut} className='outline_btn login w-32 h-7'>
                                 Sign Out

@@ -137,7 +137,7 @@ const page = () => {
 
   return (
     <div className='h-screen overflow-y-auto flex flex-col'>
-        <div className='flex flex-col w-5/6 items-center pb-10 mx-auto'>
+        <div className='flex flex-col w-full items-center pb-10 mx-auto px-8'>
 
         {/* Add prospect button */}
         <div className="flex justify-end w-full py-10">
