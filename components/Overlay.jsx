@@ -22,6 +22,7 @@ const Overlay = ({id, onClose, onSubmit, name, setName, date, setDate, contact, 
         try {
           console.log(linkToCopy)
           await navigator.clipboard.writeText(linkToCopy);
+          onSubmit({ name: name, date: date, id: id, contact: contact});
           setCopied(true);
           setTimeout(() => setCopied(false), 5000); 
         } catch (error) {
