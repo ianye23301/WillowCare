@@ -5,6 +5,35 @@ import { useSession } from 'next-auth/react';
 import Overlay from '@/components/Overlay';
 
 const page = () => {
+
+    const pdfFiles = [
+        'LIC405.pdf',
+        'lic601.pdf',
+        'lic602a.pdf',
+        'LIC603.pdf',
+        'LIC603A.pdf',
+        'LIC604A.pdf',
+        'LIC605A.pdf',
+        'LIC613C.pdf',
+        'LIC621.pdf',
+        'LIC625.pdf',
+        'LIC627C.pdf',
+        'LIC9158.pdf',
+        'lic9172.pdf',
+      ];
+      
+
+    async function fetchPdfBlob(filename) {
+        try {
+          const response = await fetch(`/move-in/${filename}`);
+          const blob = await response.blob();
+          return blob;
+        } catch (error) {
+          console.error(`Error fetching ${filename}:`, error);
+          throw error;
+        }
+      }      
+
     const [showOverlay, setShowOverlay] = useState(false)
     const [showPortal, setShowPortal] = useState(false)
     const [id, setId] = useState('')
@@ -65,18 +94,28 @@ const page = () => {
 
     const handleProspectSubmit = async({id, name, date, contact}) => {
         try {
+
+            const formData = new FormData()
+
+            for (const filename of pdfFiles) {
+                try {
+                  const blob = await fetchPdfBlob(filename);
+                  formData.append(`${filename}`, blob); // Append each Blob to FormData
+                } catch (error) {
+                  // Handle error
+                }
+              }
+              formData.append('id',id)
+              formData.append('name',name)
+              formData.append('date', date)
+              formData.append('contact_name', contact.name)
+              formData.append('contact_phone', contact.phone)
+              formData.append('contact_email', contact.email)
+              formData.append('user_email', session?.user.email)
+            
             const response = await fetch('/api/move_ins/new', {
                 method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                  id: id,
-                  name: name,
-                  date: date,
-                  contact: contact,
-                  user_email: session?.user.email
-                })
+                body: formData
               });
               fetchResidents()
         }
@@ -91,11 +130,11 @@ const page = () => {
 
   return (
     <div className='h-screen overflow-y-auto flex flex-col'>
-        <div className='flex flex-col h-full w-5/6 items-center mx-auto'>
+        <div className='flex flex-col w-5/6 items-center pb-10 mx-auto'>
             <div className='flex justify-end w-full py-10'>
                 <button className='button p-2 px-4 ' onClick={handleAddProspect}>Add Prospect</button>
             </div>
-            <div className='w-full min-h-40 px-4 bg-white rounded borders shadow-custom'>
+            <div className='w-full px-4 min-h-40 bg-white rounded borders shadow-custom'>
                 <div className='gray-12-bg borders shadow-custom mx-4 my-4 flex flex-row' onClick={()=>{console.log(residents)}}>
                     <div className='w-1/6 label p-2'> Name </div>
                     <div className='w-1/5 label p-2'> Target Date </div>
@@ -108,7 +147,7 @@ const page = () => {
                     residents.map((resident, index) => (
                         <div key={index} className='mx-4 my-4 flex flex-row h-20'>
                             <div className='w-1/6 p-2 label'> {resident.name} </div>
-                            <div className='w-1/5 p-2 label'> {formatDate(resident.target_date)} </div>
+                            <div className='w-1/5 p-2 label'> {resident.target_date && formatDate(resident.target_date) } </div>
                             <div className='w-1/4 p-2 label'> Progress </div>
                             <div className='w-1/5 p-2 label'> Last Update</div>
                             <div className='w-1/6 p-2 flex flex-col'> 

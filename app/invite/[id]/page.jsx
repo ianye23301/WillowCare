@@ -6,19 +6,28 @@ import { usePathname } from "next/navigation";
 
 function Portal() {
 
+    function getLIC(str) {
+        const index = str.indexOf('.');
+        if (index !== -1) {
+          return str.substring(0, index);
+        }
+        return str;
+      }
+      
+
     const forms = [
-        { name: "Record of Client's/Resident's Safeguarded Cash Resources", path: "LIC405.pdf" },
-        { name: "Identification and Emergency Information", path: "lic601.pdf" },
-        { name: "Physician's Report for Residential Care Facilities for the Elderly (RCFE)", path: "lic602a.pdf" },
-        { name: "Preplacement Appraisal Information", path: "LIC603.pdf" },
-        { name: "Guide to Admission Agreements for Residential Care Facility for the Elderly", path: "LIC604A.pdf" },
-        { name: "Release of Client/Resident Medical Information", path: "LIC605A.pdf" },
-        { name: "Personal Rights for Residential Care Facilities for the Elderly", path: "LIC613C.pdf" },
-        { name: "Client/Resident Personal Property and Valuables", path: "LIC621.pdf" },
-        { name: "Appraisal/Needs and Services Plan", path: "LIC625.pdf" },
-        { name: "Consent for Emergency Medical Treatment - Adult and Elderly Residential Facilities", path: "LIC627C.pdf" },
-        { name: "Telecommunications Device Notification", path: "LIC9158.pdf" },
-        { name: "Functional Capability Assessment", path: "lic9172.pdf" }
+        { name: "Record of Client's/Resident's Safeguarded Cash Resources", path: "LIC405.pdf", lic: "LIC405" },
+        { name: "Identification and Emergency Information", path: "lic601.pdf", lic: "LIC601" },
+        { name: "Physician's Report for Residential Care Facilities for the Elderly", path: "lic602a.pdf", lic: "LIC602A" },
+        { name: "Preplacement Appraisal Information", path: "LIC603.pdf", lic: "LIC603" },
+        { name: "Guide to Admission Agreements for Residential Care Facility for the Elderly", path: "LIC604A.pdf", lic: "LIC604A" },
+        { name: "Release of Client/Resident Medical Information", path: "LIC605A.pdf", lic: "LIC605A" },
+        { name: "Personal Rights for Residential Care Facilities for the Elderly", path: "LIC613C.pdf", lic: "LIC613C" },
+        { name: "Client/Resident Personal Property and Valuables", path: "LIC621.pdf", lic: "LIC621" },
+        { name: "Appraisal/Needs and Services Plan", path: "LIC625.pdf", lic: "LIC625" },
+        { name: "Consent for Emergency Medical Treatment - Adult and Elderly Residential Facilities", path: "LIC627C.pdf", lic: "LIC627C" },
+        { name: "Telecommunications Device Notification", path: "LIC9158.pdf", lic: "LIC9158" },
+        { name: "Functional Capability Assessment", path: "lic9172.pdf", lic: "LIC9172" }
       ];
 
 
@@ -63,12 +72,12 @@ function Portal() {
     pdf ? (
     <div className="App">
       <div className="PDF-viewer">
-        <ViewerComponent document={pdf} onClose = {closePdf} />
+        <ViewerComponent document={pdf} onClose = {closePdf} id = {id} name = {getLIC(pdf)}/>
       </div>
     </div>
     ) : (
         info && (
-        <div className='h-screen overflow-y-auto flex flex-col'>
+        <div className='overflow-y-auto flex flex-col pb-10'>
             <div className='flex flex-col h-full w-4/6 mt-10 mx-auto'>
                 <div className="label">
                     {info.contact.name},
@@ -80,7 +89,7 @@ function Portal() {
                 {forms.map((form,index) => (
                 <div key = {index} className="borders shadow-custom p-4 m-3 flex flex-row">
                     <div className="w-3/5 flex flex-col">
-                        <div className="label">{form.name}</div>
+                        <div className="label">{form.name} ({form.lic})</div>
                         {info.date && (
                         <div className="input-text gray-9">Due by {info.date}</div>
                         )}

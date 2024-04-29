@@ -12,8 +12,6 @@ import { usePathname } from 'next/navigation'
 const Layout = ({ children }) => {
     const path = usePathname();
     const portal_side = path.includes('invite')
-    useEffect(()=>{console.log(path),[]})
-    useEffect(()=>{console.log(portal_side),[]})
 
     const onEnterKeyPress = () => {
         console.log('handled');
