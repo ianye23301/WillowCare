@@ -5,7 +5,7 @@ const Sidebar = ({ currentPage }) => {
     { path: "/compliance", icon: "/assets/icons/compliance-icon.svg", label: "Compliance" },
     { path: "/residents", icon: "/assets/icons/residents-icon.svg", label: "Residents" },
     { path: "/service", icon: "/assets/icons/plan.svg", label: "Service Plan" },
-    { path: "/movein", icon: "/assets/icons/movein.svg", label: "Move-Ins" },
+    { path: "/movein", icon: "/assets/icons/movein.svg", label: "Admissions" },
 
   ];
 
