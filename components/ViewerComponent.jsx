@@ -25,6 +25,8 @@ export default function ViewerComponent({id, document, onClose, name, editor}) {
   const containerRef = useRef(null);
 
   const [instance, setInstance] = useState(null)
+  const [saving, setSaving] = useState(false)
+  const [completing, setCompleting] = useState(false)
 
   useEffect(() => {
     const container = containerRef.current;
@@ -51,6 +53,11 @@ export default function ViewerComponent({id, document, onClose, name, editor}) {
   }, []);
 
   const handleSubmit = async(complete) => {
+    if (complete){
+      setCompleting(true)
+    } else {
+      setSaving(true)
+    }
     try {
       console.log("hello")
       // Export the PDF document as an ArrayBuffer
@@ -75,6 +82,8 @@ export default function ViewerComponent({id, document, onClose, name, editor}) {
       });
 
       console.log('PDF document uploaded successfully');
+      setSaving(false)
+      setCompleting(false)
     } catch (error) {
       console.error('Error exporting and uploading PDF document:', error);
     }
@@ -90,8 +99,8 @@ export default function ViewerComponent({id, document, onClose, name, editor}) {
     <div className="label">Editing {name}</div>
   </div>
   <div>
-    <button className="p-2 px-4 mr-10" onClick={() => { handleSubmit(false) }}> Save </button>
-    <button className="p-2 mr-4" onClick={() => { handleSubmit(true) }}> Mark as Complete </button>
+    <button className="p-2 px-4 mr-10" onClick={() => { handleSubmit(false) }}> {saving ? ("Saving...") : ("Save")} </button>
+    <button className="p-2 mr-4" onClick={() => { handleSubmit(true) }}> {completing ? ("Saving...") : ("Mark as Complete")}  </button>
   </div>
 </div>
     <div ref={containerRef} style={{ width: "100%", height: "100vh" }} />
