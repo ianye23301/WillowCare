@@ -48,7 +48,7 @@ const Layout = ({ children }) => {
             </div>
 
             <div className="flex-1 flex flex-col">
-                <div className='flex items-center  search sticky top-0'>
+                <div className='flex items-center search sticky top-0 pr-4'>
                     <Searchbar onEnterKeyPress={onEnterKeyPress}/>
                     <Profile/>
                     {/* {!loading && (session?.user ? (

@@ -111,6 +111,7 @@ h3 {
 
 .search {
   background-color: #362F56;
+  height: 60px; /* Figma says 57, I changed to 60 */
 }
 
 .input-text {
