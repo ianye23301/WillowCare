@@ -227,12 +227,24 @@ const page = () => {
                   <div className="w-1/6 p-2 label"> {resident.name} </div>
                   <div className="w-1/5 p-2 label">
                     {" "}
-                    {formatDate(resident.target_date)}{" "}
+                    {resident.target_date ? formatDate(resident.target_date) : "None"}{" "}
                   </div>
                   <div className="w-1/4 p-2 pr-10 label"> 
                     <Stack direction="column">
-                      <Typography color="textPrimary" variant = "caption" sx = {{fontSize: '0.7rem'}}>{`Step ${countTrues(resident.forms)} of 12`}</Typography>
-                      <LinearProgress variant="determinate" value={(countTrues(resident.forms)/12)*100} sx={{ height: '10px', borderRadius: '5px', color: 'purple', minWidth: '140px'}} />
+                      <Typography className="gray-3" variant = "caption" sx = {{fontSize: '0.7rem'}}>{`Step ${countTrues(resident.forms)} of 12`}</Typography>
+                      <LinearProgress
+                        variant="determinate"
+                        value={(countTrues(resident.forms) / 12) * 100}
+                        sx={{
+                          height: '10px',
+                          borderRadius: '5px',
+                          minWidth: '140px',
+                          backgroundColor: 'rgba(109, 93, 220, 0.2)', // Lighter shade of #6d5ddc
+                          '& .MuiLinearProgress-bar': {
+                            backgroundColor: '#6d5ddc', // Desired color for the progress bar
+                          },
+                        }}
+                      />
                     </Stack>
                   </div>
                   <div className="w-1/5 p-2"> Last Updated <span className="label">{formatLastUpdated(resident.last_updated)}</span> ago by <span className="label">{resident.editor}</span></div>
