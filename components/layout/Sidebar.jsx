@@ -12,7 +12,7 @@ const Logo = () => {
       <div className="flex justify-between items-center pb-7 py-6 px-6">
         <Link href="/" className="flex gap-2 center">
           <Image
-            src="/assets/images/logo.png"
+            src='/assets/images/(LQ) Willow Logo.png'
             alt="logo"
             width={180}
             height={180}

@@ -19,14 +19,14 @@ const Layout = ({ children }) => {
         //implement
     };
 
-    const { data: session, status: sessionStatus } = useSession();
-    const loading = sessionStatus === 'loading';
+    // const { data: session, status: sessionStatus } = useSession();
+    // const loading = sessionStatus === 'loading';
 
     return (portal_side ? (
         <div className='flex flex-col'>
             <div className="border-b flex flex-row">
                 <img
-                    src='/assets/images/logo.png'
+                    src='/assets/images/(LQ) Willow Logo.png'
                     alt="logo"
                     width={120}
                     height={120}
@@ -50,7 +50,25 @@ const Layout = ({ children }) => {
                     <Searchbar onEnterKeyPress={onEnterKeyPress} />
                     {/* <Profile/> */}
 
-                    {!loading && (session?.user ? (
+                    {(
+                        <div className='flex items-center gap-3'>
+                            <button type='button' onClick={signOut} className='outline_btn login w-32 h-7'>
+                                Sign Out
+                            </button>
+
+                            {/* <Image
+                                src={session?.user.image}
+                                width={50}
+                                height={50}
+                                className='rounded-full p-1'
+                                alt='profile'
+                                layout='fixed'
+                                priority
+                            /> */}
+                        </div>
+                    )}
+
+                    {/* {!loading && (session?.user ? (
                         <div className='flex items-center gap-3'>
                             <button type='button' onClick={signOut} className='outline_btn login w-32 h-7'>
                                 Sign Out
@@ -72,7 +90,7 @@ const Layout = ({ children }) => {
                                 Sign In
                             </button>
                         </div>
-                    ))}
+                    ))} */}
                 </div>
                 <div className='flex-1 flex flex-col h-full background'>
                     {children}
